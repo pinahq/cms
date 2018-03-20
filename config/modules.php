@@ -8,7 +8,6 @@ return array(
         'Pina\\Modules\\Images',
         'Pina\\Modules\\Import',
         'Pina\\Modules\\Regions',
-        'Pina\\Modules\\RetailCRM',
         'Pina\\Modules\\Users',
         'Pina\\Modules\\Banners',
         'Pina\\Modules\\PayPal',
