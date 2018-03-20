@@ -1,0 +1,2 @@
+<li role="presentation"><a href="{link get="cp/:cp/products/:resource_id/offers" resource_id=$params.resource_id}">Offers <span class="badge">{$offer_count|default:0}</span></a></li>
+<li role="presentation"><a href="{link get="cp/:cp/offer-tag-types" resource_id=$params.resource_id}">Options</a></li>

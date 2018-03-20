@@ -1,0 +1,36 @@
+{
+  "name": "pina2",
+  "version": "2.0.0",
+  "authors": [
+    "Alex Yashin <alex@alex-yashin.com>"
+  ],
+  "license": "Pina",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "normalize.css": "*",
+    "jquery": "2.*",
+    "jqueryui": "*",
+    "jquery-form": "*",
+    "jquery-file-upload": "*",
+    "bootstrap": "3.*",
+    "modernizr": "2.8.3",
+    "fancybox": "2.1.*",
+    "bootstrap-material-design": "0.5.*",
+    "bootstrap-tagsinput": "*",
+    "typeahead.js": "*",
+    "elevatezoom": "2.2.3",
+    "ResponsiveSlides": "v1.55",
+    "jquery_lazyload": "1.9.*",
+    "jstree-bootstrap-theme": "1.0.1",
+    "bootstrap-fileinput": "^4.3.8",
+    "select2": "~4.0",
+    "tinymce": "^4.5.5"
+  }
+}

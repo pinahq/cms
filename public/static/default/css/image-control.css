@@ -1,0 +1,57 @@
+.image-control .image {
+    background-color: white;
+    display: inline-block;
+    width: 180px;
+    height: 180px;
+    background-size: contain;
+    background-position: center center;
+    background-repeat: no-repeat;
+}
+
+.image-control .image-placeholder {
+    border: 1px dotted black;
+    background: #eee;
+    
+	font-family: 'Glyphicons Halflings';
+    font-style: normal;
+    
+    content: "\e068";
+}
+
+.image-control .image .remove {
+    position: absolute;
+    margin-left: 150px;
+    width: 30px;
+    height: 30px;
+    font-size: 25px;
+    text-height: 30px;
+    background-color: #ccc;
+    text-align: center;
+}
+
+.image-control .image a.image-center {
+    display: table-cell;
+    vertical-align: middle;
+    text-align: center;
+    width: 180px;
+    height: 180px;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.image-control .image a.image-center span {
+    /*display: none;*/
+    background: #6fadae;
+    color: white;
+    padding: 4px;
+    font-weight: bold;
+    font-size: 24px;
+    
+    opacity: 0;
+    transition: opacity 0.2s ease 0s, transform 0.35s ease 0s;
+}
+
+.image-control .image a.image-center:hover span {
+    /*display: inline-block;*/
+    opacity: 1;
+}

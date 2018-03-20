@@ -1,0 +1,1 @@
+<li role="presentation"><a href="{link get="cp/:cp/offers" tag_resource_id=$params.resource_id}">Prices</a></li>

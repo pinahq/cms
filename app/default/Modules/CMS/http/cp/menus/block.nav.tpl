@@ -1,0 +1,1 @@
+<li {if $params.namespace eq 'menus'}class="active"{/if}><a href="{link get="cp/:cp/menus"}">{t}Menu{/t}</a></li>

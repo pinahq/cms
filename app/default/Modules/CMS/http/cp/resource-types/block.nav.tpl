@@ -1,0 +1,1 @@
+<li {if $params.namespace eq 'resource-types'}class="active"{/if}><a href="{link get="cp/:cp/resource-types"}">Resource Types</a></li>

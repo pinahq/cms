@@ -1,0 +1,1 @@
+{include file="Layout/frontend/main.tpl"}

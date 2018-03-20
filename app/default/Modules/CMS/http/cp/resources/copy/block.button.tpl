@@ -1,0 +1,1 @@
+<a href="#" class="btn btn-default btn-raised pina-action action-copy" {action_attributes post="cp/:cp/resources/:id/copy" id=$resource.id}>{t}Create copy{/t}</a>

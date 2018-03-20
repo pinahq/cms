@@ -1,0 +1,1 @@
+{view get="auth" display=block}

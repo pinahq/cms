@@ -1,0 +1,22 @@
+.config-panel {
+    box-shadow: none;
+    -webkit-box-shadow: none;
+}
+
+.config-panel table {
+    margin: 0;
+}
+
+.config-panel table>td {
+    height: 50px;
+    text-align: center; 
+    vertical-align: middle;
+}
+
+.config-panel table>tr.active {
+    background-color: #eeeeee;
+}
+
+.reset-padding {
+    padding: 0;
+}

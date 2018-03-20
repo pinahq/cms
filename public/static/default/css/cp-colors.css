@@ -1,0 +1,11 @@
+a {
+    color: #366e6f;
+}
+
+a:hover {
+    color: #de7b2a;
+}
+
+.nav-tabs {
+    background: #366e6f;
+}

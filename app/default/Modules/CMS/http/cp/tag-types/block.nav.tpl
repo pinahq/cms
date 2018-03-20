@@ -1,0 +1,1 @@
+<li {if $params.namespace eq 'tag-types'}class="active"{/if}><a href="{link get="cp/:cp/tag-types"}">{t}Tags{/t}</a></li>

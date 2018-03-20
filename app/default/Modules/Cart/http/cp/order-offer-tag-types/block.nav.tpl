@@ -1,0 +1,1 @@
+<li><a href="{link get="cp/:cp/order-offer-tag-types" resource_id=$resource.id}">{t}Order settings{/t}</a></li>

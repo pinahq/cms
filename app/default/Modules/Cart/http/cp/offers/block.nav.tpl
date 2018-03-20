@@ -1,0 +1,1 @@
+<li><a href="{link get="cp/:cp/offers"}">Прайс-лист</a></li>

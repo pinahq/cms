@@ -1,0 +1,1 @@
+{module get="carts/:cart_id/products" cart_id=$cart_id display="navbar"}

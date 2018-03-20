@@ -1,0 +1,1 @@
+<li {if $params.namespace eq 'payment-methods'}class="active"{/if}><a href="{link get="cp/:cp/payment-methods"}">Payment Methods</a></li>

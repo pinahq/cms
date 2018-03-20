@@ -1,0 +1,446 @@
+
+
+
+
+
+
+
+
+
+/* dialog */
+.form-dialog {
+    margin-bottom: 15px;
+    padding: 30px;
+    background: #f6f6f6
+}
+
+.form-control-static {
+    padding-top: 0;
+    padding-bottom: 0;
+}
+
+.form-dialog .operations {
+    text-align: center;
+}
+
+
+body > .container > .form-registration, 
+body > .container > .form-auth {
+    margin-bottom: 250px;
+}
+
+.form-dialog .operations button + a {
+    display: block;
+    margin: 20px auto 0;
+}
+
+.form a.link {
+    font-size: 15px;
+}
+
+.form a.link-operation {
+    border: 0px dotted #0898c6;
+    border-width: 0px 0px 1px 0px;
+    text-decoration: none !important;
+}
+
+a.link-operation:hover {
+    border-color: #8d8d8d;
+}
+
+body.registration > nav.menu + .container {
+    background: url(/static/doodly/img/registration-background.jpg) no-repeat left 120px;
+}
+
+body.auth > nav.menu + .container {
+    background: url(/static/doodly/img/auth-background.jpg) no-repeat left 120px;
+}
+
+
+/* pages */
+
+.text p {
+    line-height: 1.5;
+}
+
+.text li {
+    font-size: 18px;
+    line-height: 1.5;
+}
+
+.text h3, .text h4, .text h5 {
+    color: #ec589a;
+    font-weight: bold;
+}
+
+/* navbar */
+.navbar {
+    margin: 0;
+    border-radius: 0;
+}
+
+/* menu */
+
+nav.menu > .container > ul.nav > li:first-child > * {
+    margin-left: -20px;
+}
+
+#navbar > ul.nav > .open > a,
+#navbar > ul.nav > .open > a:focus,
+#navbar > ul.nav > .open > a:hover,
+#navbar > ul.nav > .open > .dropdown-menu,
+#navbar > ul.nav > .open > .dropdown-menu,
+#navbar > ul.nav > .open > .dropdown-menu {
+    background: white !important;
+    color: #363636;
+}
+
+#navbar .menu-division > h5 {
+    position: relative;
+    display: block;
+    padding: 10px 15px;
+    margin: 0;
+}
+
+.dropdown-menu {
+    border: none;
+    margin: 0;
+    border-radius: 0px;
+    white-space: nowrap;
+    min-width: 320px;
+}
+
+.dropdown-menu .menu-division {
+    white-space: nowrap;
+    display: inline-block;
+    vertical-align: top;
+    min-width: 160px;
+}
+
+.dropdown-menu ul.nav {
+    display:inline-block;
+    vertical-align: top;
+}
+
+@media (max-width: 767px) {
+    .dropdown-menu .menu-division {
+        white-space: normal;
+        display: block;
+        width: 100%;
+    }
+}
+
+.breadcrumb {
+    border-radius: 0;
+}
+
+/*homepage*/
+
+/* promo */
+
+.promo {
+    background: url(/static/doodly/img/promo-background.png);
+    padding: 14px;
+    text-align: center;
+}
+
+.promo-header {
+    width: 329px;
+    height: 340px;
+    background: url(/static/doodly/img/promo-discount.png);
+}
+
+.promo-header, .promo-item {
+    vertical-align: top;
+    display: inline-block;
+    margin: 0 20px 0 0;
+}
+
+.promo-item {
+    color: #1d1d1d;
+    width: 330px;
+    text-align: center;
+}
+
+.promo-item:last-child {
+    margin-right: 0;
+}
+
+.promo-item:hover {
+    color: #1d1d1d;
+}
+
+.promo-item > img {
+    display: inline-block;
+    margin-bottom: 10px;
+}
+
+.promo-item > .promo-title {
+    display: inline-block;
+    max-width: 100%;
+    line-height: 28px;
+    font-size: 28px;
+}
+
+
+/*footer*/
+/* bottom */
+
+footer {
+    margin-top: 15px;
+    border-top: 1px solid #e7e7e7;
+    padding: 15px;
+    text-align: center;
+    background: #f8f8f8;
+}
+
+footer > .nav > li {
+    display: inline-block;
+}
+
+footer > .nav + p {
+    margin-top: 15px;
+}
+
+/*catalog*/
+
+.products > .product {
+    text-align: center;
+    margin-bottom: 15px;
+}
+
+.products > .product > a {
+    color: #363636;
+}
+
+.products > .product .product-price {
+    color: #337ab7;
+    font-weight: bold;
+}
+
+.recommendations > .products {
+    margin: 0;
+}
+
+.recommendations > .products > .product {
+    margin: 0;
+}
+
+.recommendations > h3 {
+    margin: 0;
+    padding: 0;
+}
+
+
+
+.products > .product > .thumbnail {
+    border: none;
+    padding: 0;
+    margin: 0;
+}
+
+.product .product-label-sale {
+    display: block;
+    position: absolute;
+    width: 49px;
+    height: 26px;
+    line-height: 26px;
+    z-index: 200;
+    background: #a94442;
+    color: white;
+    text-align: center;
+}
+
+.products .product .product-label-sale {
+    right: 0;
+}
+
+.product .product-header {
+    margin: 0;
+}
+
+.product .price {
+    font-size: 28px;
+    color: #a94442;
+    margin-bottom: 31px;
+}
+
+.product .price .price-sale {
+    font-size: 1.5em;
+}
+
+.product .price .price-compare {
+    color: #363636;
+}
+
+
+.product .form-group label {
+    font-weight: normal;
+    margin-bottom: 8px;
+}
+
+.product .form-group .nav-pills > li {
+    display: inline-block;
+    float: none;
+}
+
+.product .form-group .nav-pills > li > a {
+    background: white;
+    border: 1px solid #d1d1d1;
+    border-radius: 0;
+    color: #363636;
+    font-size: 18px;
+    margin: 1px;
+}
+
+.product .form-group .nav-pills > li.active > a {
+    border: 2px solid #a94442;
+    margin: 0;
+}
+
+.product .form-group .nav-pills>li+li {
+    margin-left: 0;
+}
+
+.product .buttons {
+    margin: 33px 0;
+}
+
+.product .image {
+    margin-bottom: 10px;
+}
+
+.product .product-thumbnails > .product-thumbnail {
+    display: inline-block;
+    margin-right: 10px;
+}
+
+.product .product-thumbnails > .product-thumbnail:last-child {
+    margin-right: 0px;
+}
+
+
+
+
+
+
+
+
+
+
+/* tabs */
+
+.nav-tabs > li > a {
+    border-radius: 0;
+}
+
+.nav-tabs>li.active>a,
+.nav-tabs>li.active>a:focus, 
+.nav-tabs>li.active>a:hover {
+    color: #363636;
+    background: #f1f1f1;
+}
+
+.tab-content>.tab-pane {
+    border: 1px solid #d1d1d1;
+    border-top: none;
+    padding: 22px;
+}
+
+
+
+/*cart*/
+
+.cart-totals {
+    text-align: right;
+}
+
+.cart-totals .total {
+    display: block;
+    font-size: 2em;
+}
+
+/*checkout*/
+
+
+/* checkout */
+
+/*
+body.checkout .form-dialog {
+    max-width: 718px;
+}
+
+.nav-checkout {
+    text-align: right;
+    max-width: 718px;
+    maring: auto;
+}
+.nav-checkout > li,
+.nav-checkout > li > a {
+    display: inline-block;
+}
+
+.nav-checkout > li > a {
+    padding: 0;
+    margin: 0 0 20px 80px;
+    color: #363636;
+    font-size: 18px;
+    border: 0px dotted #363636;
+    border-width: 0px 0px 1px 0px;
+}
+
+.nav-checkout > li:first-child > a {
+    margin-left: 0;
+}
+*/
+.form-checkout .operations {
+    text-align: right;
+}
+
+.checkout-address .control-label {
+    text-align: right;
+    font-weight: normal;
+}
+
+.form-checkout legend {
+    text-align: center;
+    border: none;
+    font-size: 24px;
+    line-height: 1;
+    text-transform: uppercase;
+    padding-top: 20px;
+}
+
+.shipping-methods {
+    text-align: right;
+}
+
+.shipping-methods > .radio {
+    display: inline-block;
+    margin-left: 40px;
+}
+
+.shipping-methods > .radio > label {
+    display: block;
+    position: relative;
+    font-size: 18px;
+}
+
+.shipping-methods > .radio > label > input[type=radio] {
+    display: block;
+    position: absolute;
+    left: 0;
+    margin: 0;
+}
+
+.shipping-methods > .radio > label > .shipping-method-header,
+.shipping-methods > .radio > label > .shipping-method-details {
+    display: block;
+    text-align: right;
+    margin: 0 0 10px 0;
+}
+
+.shipping-methods > .radio > label > .shipping-method-details {
+    font-size: 15px;
+    color: #7a7a7a;
+}
