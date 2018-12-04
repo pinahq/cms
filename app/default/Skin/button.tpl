@@ -1,1 +1,0 @@
-{assign var="default_title" value="send"|lng}<input class="formbutton{if $class} {$class}{/if}" type="submit" alt="{$title|default:$default_title}" value="{$title|default:$default_title}" name="" title="{$title|default:$default_title}"{if $style} style="{$style}"{/if} />

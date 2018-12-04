@@ -30,15 +30,20 @@ if (Config::get(__NAMESPACE__, 'display_out_of_stock') !== 'Y') {
     $gw->whereInStock();
 }
 
+$needGroupBy = false;
+
 $gw->innerJoin(
         ResourceGatewayExtension::instance()->alias('origin')->on('title')->onBy('id', $resourceId)
     )
     ->withImage()
     ->withUrl()
     ->withPrice()
+    ->withDiscount($needGroupBy)
     ->withListTags()
     ->limit($limit)
     ->groupBy('resource.id');
 $rs = $gw->get();
+
+$rs = Discount::applyList($rs, 'discount_percent');
 
 return ['resources' => $rs];

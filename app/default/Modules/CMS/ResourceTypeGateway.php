@@ -14,7 +14,6 @@ class ResourceTypeGateway extends TableDataGateway
         "tree" => "enum('Y','N') NOT NULL DEFAULT 'N'",
         'pattern' => "VARCHAR(128) NOT NULL DEFAULT ''",
         'cp_pattern' => "VARCHAR(128) NOT NULL DEFAULT ''",
-        'module_id' => "INT(10) NOT NULL DEFAULT 0",
     );
 
     protected static $indexes = array(

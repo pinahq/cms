@@ -18,6 +18,7 @@
     <li><a href="{link get="cp/:cp/offer-imports/:import_id/schema" import_id=$params.import_id}">{t}Schema{/t}</a></li>
     <li class="active"><a href="{link get="cp/:cp/offer-imports/:import_id/replaces" import_id=$params.import_id}" class="action">{t}Replaces{/t}</a></li>
     <li><a href="{link get="cp/:cp/offer-imports/:import_id/keys" import_id=$params.import_id}">{t}Key fields{/t}</a></li>
+    <li><a href="{link get="cp/:cp/offer-imports/:import_id/settings" import_id=$params.import_id}">{t}Settings{/t}</a></li>
 </ul>
 
 <div class="panel">
@@ -107,7 +108,7 @@
                     <li>Где <b>"замена"</b> - правило или замена, которая будет произведена при успешной проверке условия</li>
                     <li>Если в выражении <b>"строка"</b> прописать <b>"***"</b>, проверочная строка заменится на значение текущего поля</li>
                     <li>Если в выражении <b>"строка"</b> прописать <b>"$Поле"</b>, проверочная строка заменится на значение любого другого поля</li>
-                    <li>Пример: <b>?:$Бренд?:Modarola?:123</b> - для строки с брендом "Modarola" заменит "123" на значение из поля "Заменить"</li>
+                    <li>Пример: <b>?:$Бренд?:PINA?:123</b> - для строки с брендом "PINA" заменит "123" на значение из поля "Заменить"</li>
                 </ul>
             </div>
         </div>

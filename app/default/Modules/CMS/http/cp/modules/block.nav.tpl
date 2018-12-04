@@ -1,0 +1,1 @@
+<li {if $params.namespace eq 'modules'}class="active"{/if}><a href="{link get="cp/:cp/modules"}">{t}Modules{/t}</a></li>

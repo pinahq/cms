@@ -1,1 +1,1 @@
-<h2 id="branding"><a href="{link action="home"}" title="{$config.seo.logo_link_title}">{$config.seo.logo_link_content}</a></h2>
+<a class="navbar-brand" href="/">PINA2</a>

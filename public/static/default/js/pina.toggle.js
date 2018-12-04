@@ -18,6 +18,7 @@ $(".action-toggle").on('change', function () {
             if (r[key] != current) {
                 $el.prop('checked', r[key] == 'Y' ? true : false);
             }
+            $el.trigger("success");
         }
     });
     

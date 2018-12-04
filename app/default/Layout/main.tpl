@@ -18,62 +18,33 @@
         {style src="/static/default/css/main.css"}{/style}
 
         {styles}
-        
+
         {config namespace="Pina\\Modules\\CMS" key="custom_header_code"}
     </head>
     <body class="{place name="body_class"}">
 
-        <nav class="navbar navbar-default">
-            <div class="container">
-                <div class="navbar-header">
-                    <a class="navbar-brand" href="/">PINA2</a>
+        {include file="Skin/page-header.tpl"}
 
-                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-                        <span class="sr-only">Toggle navigation</span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                    </button>
-                </div>
-                <div id="navbar" class="collapse navbar-collapse">
-                    <ul class="nav navbar-nav">
-                        {module get="categories" display="main-menu" parent_id=0 length=2}
-                        {config key="company_phone" namespace="Pina\Modules\CMS" assign=phone}
-                        {if $phone}
-                            <li><a href="tel:{$phone}">{$phone}</a></li>
-                        {/if}
-                        {view get="submissions/block" display="callback"}
-                    </ul>
-                    <ul class="nav navbar-nav navbar-right">
-                        <li class="search">
-                            <a href="{link get="search"}">Поиск</a>
-                        </li>
-                        {module get="auth" display=navbar}
-                        {module get="carts" display="navbar" wrapper="li class=cart"}
-                    </ul>
-                </div><!--/.nav-collapse -->
+
+        <div class="container-breadcrumb">
+            <div class="container">
+                {place name="breadcrumb"}
             </div>
-        </nav>
+        </div>
 
 
         {place name="top"}
 
         <div class="container theme-showcase" role="main">
-            {include file="Skin/message.tpl"}
             {$content}
         </div>
 
-        <footer>
-            <ul class="nav">
-                {module get="pages" display="list" parent_id=0 length=1}
-            </ul>
-            <p class="copyrights"><span class="glyphicon glyphicon-copyright-mark"></span> 2017 Alex Yashin</p>
-        </footer>
+        {include file="Skin/page-footer.tpl"}
 
         {place name="bottom"}
 
         {scripts}
-        
+
         {config namespace="Pina\\Modules\\CMS" key="custom_footer_code"}
     </body>
 </html>

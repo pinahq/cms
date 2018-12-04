@@ -42,10 +42,14 @@
 {literal}
     <script>
         $(".form-resource").on("success", function (event, packet, status, xhr) {
-            PinaRequest.handleRedirect(xhr);
+            if (!PinaRequest.handleRedirect(xhr)) {
+                document.location.reload();
+            }
         });
         $(".action-copy").on("success", function (event, packet, status, xhr) {
-            PinaRequest.handleRedirect(xhr);
+            if (!PinaRequest.handleRedirect(xhr)) {
+                document.location.reload();
+            }
         });
     </script>
 {/literal}

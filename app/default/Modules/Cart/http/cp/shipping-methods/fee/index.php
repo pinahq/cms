@@ -6,9 +6,6 @@ use Pina\Request;
 use Pina\Response;
 use Pina\Arr;
 use Pina\Modules\CMS\Config;
-use Pina\Modules\Regions\CountryGateway;
-use Pina\Modules\Regions\RegionGateway;
-use Pina\Modules\Regions\CityGateway;
 
 Request::match('cp/:cp/shipping-methods/:shipping_method_id/fee');
 
@@ -62,7 +59,7 @@ if (Request::input('download')) {
     $schema[] = ['city', __('City')];
     $schema[] = ['fee', __('Price')];
 
-    $config = Config::getNamespace('Pina\\Modules\\Catalog');
+    $config = Config::getNamespace('Pina\\Modules\\Cart');
 
     $encoding = empty($config['csv_charset']) ? 'utf8' : $config['csv_charset'];
     $delimiter = empty($config['csv_delimiter']) ? ';' : ($config['csv_delimiter']);

@@ -14,6 +14,10 @@ if (Request::input('resource')) {
     }
 }
 
+if (!Request::input('enabled')) {
+    Request::set('enabled', 'N');
+}
+
 $resourceId = Resource::handleCreate();
 
 return Response::ok()->contentLocation(App::link('resources/:resource_id', ['resource_id' => $resourceId]));

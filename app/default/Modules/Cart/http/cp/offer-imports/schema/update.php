@@ -4,7 +4,7 @@ namespace Pina\Modules\Cart;
 
 use Pina\Request;
 use Pina\Response;
-use Pina\Modules\Import\ImportGateway;
+use Pina\Modules\CMS\ImportGateway;
 use Pina\Event;
 
 Request::match('cp/:cp/offer-imports/:import_id/schema');
@@ -18,7 +18,7 @@ if (empty($import) || !is_array($import)) {
 }
 
 if ($import['status'] != 'confirm') {
-    #return Response::notFound();
+    return Response::notFound();
 }
 
 $schema = Request::input('schema');
@@ -29,11 +29,7 @@ foreach ($schema as $k => $v) {
     }
 }
 
-ImportGateway::instance()
-    ->whereId($importId)
-    ->update([
-        "schema" => json_encode($schema, JSON_UNESCAPED_UNICODE)
-    ]);
+ImportGateway::instance()->whereId($importId)->setSchema($schema);
 
 Event::trigger('catalog.build-import-preview', $importId);
 

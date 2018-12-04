@@ -29,17 +29,13 @@ class Module implements ModuleInterface
         DispatcherRegistry::register(new Dispatcher());
         
         return [
-            'cp/images',
-            'images',
             'resize',
         ];
     }
     
     public function cli()
     {
-        return [
-            'image',
-        ];
+        return [];
     }
     
     public function boot()

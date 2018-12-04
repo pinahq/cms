@@ -15,10 +15,10 @@ Request::match('carts/:cart_id/products');
 
 $cartId = Request::input('cart_id');
 if (!empty($cartId)) {
-    $cos = CartOfferGateway::instance()
+    $needGroupBy = false;
+    $gw = CartOfferGateway::instance()
             ->select('amount')
         ->whereBy('cart_id', $cartId)
-        ->calculateSubtotal()
         ->innerJoin(
             OfferGateway::instance()->on('id', 'offer_id')
                 ->select('id')
@@ -30,8 +30,11 @@ if (!empty($cartId)) {
                 ->select('actual_price')
         )
         ->innerJoin(
-            ResourceGateway::instance()->on('id', 'resource_id')->select('title')->withImage()
+            ResourceGatewayExtension::instance()->on('id', 'resource_id')
+            ->select('title')
+            ->withImage()
             ->withResourceType()
+            ->withDiscount($needGroupBy)
         )
         ->leftJoin(
             ResourceUrlGateway::instance()->on('resource_id')->select('url')
@@ -43,17 +46,29 @@ if (!empty($cartId)) {
             \Pina\SQL::subquery(
                 CartOfferGateway::instance()->whereBy('cart_id', $cartId)->withOfferTag()
             )->alias('offer_tag')->on('offer_id')->select('tags')
-        )
-        ->get();
+        );
+    
+    if ($needGroupBy) {
+        $gw->groupBy('cart_offer.offer_id');
+    }
+    
+    $cos = $gw->get();
+    
+    $cos = Discount::applyList($cos, 'discount_percent');
+    
+    foreach ($cos as $k => $co) {
+        $cos[$k]['cart_offer_subtotal'] = $co['actual_price'] * $co['amount'];
+    }
     
     $tagTypes = TagTypeGateway::instance()->innerJoin(OrderOfferTagTypeGateway::instance()->on('tag_type_id', 'id'))->column('type');
     foreach ($cos as $k => $v) {
         $cos[$k]['tags'] = Tag::onlyTypes($v['resource_tags']."\n".$v['tags'], $tagTypes);
     }
     
-    $subtotal = CartOfferGateway::instance()
-        ->whereBy('cart_id', $cartId)
-        ->calculatedSubtotalValue();
+    $subtotal = 0;
+    foreach ($cos as $k => $co) {
+        $subtotal += $co['actual_price'] * $co['amount'];
+    }
 
     $coupon = CouponGateway::instance()->select('*')
         ->whereBy('enabled', 'Y')

@@ -164,20 +164,11 @@
 {literal}
     <script>
         $('.resources').sortable({
-            //placeholder: "col col-xs-6 col-sm-4 col-md-3 col-lg-2 resource",
-            /*
-             start: function (event, ui) {
-             var elem = $(event.toElement).parents('.resource');
-             var height = elem.height();
-             var width = elem.width();
-             ui.placeholder.html('<div class="col-sm-4 resource" style="border:width:' + width + 'px;height:' + height + 'px;">&nbsp;</div>');
-             },*/
             stop: function (event, ui) {
                 var resource = $(this).data('resource');
                 var method = $(this).data('method');
                 var headers = $(this).data('csrf-token') ? {'X-CSRF-Token': $(this).data('csrf-token')} : {};
                 var data = [];
-                var order = 0;
                 $('.resources .resource').each(function () {
                     data.push($(this).data('id'));
                 });

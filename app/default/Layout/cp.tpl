@@ -46,8 +46,6 @@
     </div>
 
     <div class="container-fluid" role="main">
-        {include file="Skin/message.tpl"}
-
         {$content}
     </div>
 

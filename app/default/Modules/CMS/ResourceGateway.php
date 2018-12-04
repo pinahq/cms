@@ -302,7 +302,7 @@ class ResourceGateway extends TableDataGateway
         );
     }
 
-    public function whereTagIds($tagIds, $sort = false)
+    public function whereTagIds($tagIds)
     {
         if (!is_array($tagIds)) {
             $tagIds = [$tagIds];
@@ -316,11 +316,8 @@ class ResourceGateway extends TableDataGateway
 
         foreach ($tagIds as $tagId) {
             $this->innerJoin(
-                ResourceTagGateway::instance()->alias('tag_' . $tagId)->on('resource_id', 'id')->whereBy('tag_id', $tagId)
+                ResourceTagGateway::instance()->alias('tag_' . $tagId)->on('resource_id', 'id')->onBy('tag_id', $tagId)
             );
-            if ($sort) {
-                $this->orderBy('tag_' . $tagId.'.order', 'asc');
-            }
         }
 
         return $this;
@@ -346,7 +343,7 @@ class ResourceGateway extends TableDataGateway
                 $needGroupBy = true;
             }
             $this->innerJoin(
-                ResourceFilterTagGateway::instance()->alias('tag_type_' . $tagTypeId)->on('resource_id', 'id')->whereBy('tag_id', $tagIds)
+                ResourceFilterTagGateway::instance()->alias('tag_type_' . $tagTypeId)->on('resource_id', 'id')->onBy('tag_id', $tagIds)
             );
         }
 

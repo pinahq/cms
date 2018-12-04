@@ -13,66 +13,76 @@
 <div class="panel">
     <div class="tab-content panel-body">
         {form action="/cp/:cp/resources/:id/tag-types" id=$params.resource_id}
-            <div class="md-form input-group">
-                <div class="form-group is-empty"><input type="search" name="search" class="form-control" placeholder="Search" value="{$params.search}"></div>
-                <span class="input-group-btn">
-                    <button class="btn btn btn-fab btn-fab-mini"><i class="material-icons">search</i></button>
-                </span>
-            </div>
+        <div class="md-form input-group">
+            <div class="form-group is-empty"><input type="search" name="search" class="form-control" placeholder="Search" value="{$params.search}"></div>
+            <span class="input-group-btn">
+                <button class="btn btn btn-fab btn-fab-mini"><i class="material-icons">search</i></button>
+            </span>
+        </div>
         {/form}
 
-        {include file="Skin/paging.tpl"}
-        <table class="table table-hover">
-            <col />
-            <col width="15%" />
-            <col width="15%" />
-            <col width="15%" />
-            <thead>
-                <tr>
-                    <th>{t}Tag{/t}</th>
-                    <th>{t}Details{/t}</th>
-                    <th>{t}List{/t}</th>
-                    <th>{t}Filter{/t}</th>
-                </tr>
-            </thead>
-            <tbody>
-                {foreach from=$tag_types item=t}
+        {if $tag_types}
+
+            {link_context search=$params.search}
+            {include file="Skin/paging.tpl"}
+            {/link_context}
+            <table class="table table-hover">
+                <col />
+                <col width="15%" />
+                <col width="15%" />
+                <col width="15%" />
+                <thead>
                     <tr>
-                        <td>
-                            {$t.type}
-                        </td>
-                        <td>
-                            <div class="togglebutton">
-                                <label>
-                                    <input type="checkbox" class="action-toggle"
-                                           {action_attributes put="cp/:cp/resources/:resource_id/tag-types/:id" resource_id=$params.resource_id  id=$t.id subject="details"}
-                                           {if $t.details_tag_type_id} checked=""{/if}>
-                                </label>
-                            </div>
-                        </td>
-                        <td>
-                            <div class="togglebutton">
-                                <label>
-                                    <input type="checkbox" class="action-toggle"
-                                           {action_attributes put="cp/:cp/resources/:resource_id/tag-types/:id" resource_id=$params.resource_id  id=$t.id subject="list"}
-                                           {if $t.list_tag_type_id} checked=""{/if}>
-                                </label>
-                            </div>
-                        </td>
-                        <td>
-                            <div class="togglebutton">
-                                <label>
-                                    <input type="checkbox" class="action-toggle"
-                                           {action_attributes put="cp/:cp/resources/:resource_id/tag-types/:id" resource_id=$params.resource_id  id=$t.id subject="filter"}
-                                           {if $t.filter_tag_type_id} checked=""{/if}>
-                                </label>
-                            </div>
-                        </td>
+                        <th>{t}Tag type{/t}</th>
+                        <th>{t}Details{/t}</th>
+                        <th>{t}List{/t}</th>
+                        <th>{t}Filter{/t}</th>
                     </tr>
-                {/foreach}
-            </tbody>
-        </table>
-        {include file="Skin/paging.tpl"}
+                </thead>
+                <tbody>
+                    {foreach from=$tag_types item=t}
+                        <tr>
+                            <td>
+                                {$t.type}
+                            </td>
+                            <td>
+                                <div class="togglebutton">
+                                    <label>
+                                        <input type="checkbox" class="action-toggle"
+                                               {action_attributes put="cp/:cp/resources/:resource_id/tag-types/:id" resource_id=$params.resource_id  id=$t.id subject="details"}
+                                               {if $t.details_tag_type_id} checked=""{/if}>
+                                    </label>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="togglebutton">
+                                    <label>
+                                        <input type="checkbox" class="action-toggle"
+                                               {action_attributes put="cp/:cp/resources/:resource_id/tag-types/:id" resource_id=$params.resource_id  id=$t.id subject="list"}
+                                               {if $t.list_tag_type_id} checked=""{/if}>
+                                    </label>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="togglebutton">
+                                    <label>
+                                        <input type="checkbox" class="action-toggle"
+                                               {action_attributes put="cp/:cp/resources/:resource_id/tag-types/:id" resource_id=$params.resource_id  id=$t.id subject="filter"}
+                                               {if $t.filter_tag_type_id} checked=""{/if}>
+                                    </label>
+                                </div>
+                            </td>
+                        </tr>
+                    {/foreach}
+                </tbody>
+            </table>
+
+            {link_context search=$params.search}
+            {include file="Skin/paging.tpl"}
+            {/link_context}
+        {else}
+            <p>{t}Not found{/t}
+            {/if}
     </div>
 </div>
 

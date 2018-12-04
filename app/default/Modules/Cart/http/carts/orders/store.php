@@ -6,8 +6,8 @@ use Pina\Request;
 use Pina\Response;
 use Pina\App;
 use Pina\Event;
-use Pina\Modules\Users\Auth;
-use Pina\Modules\Users\UserGateway;
+use Pina\Modules\Auth\Auth;
+use Pina\Modules\CMS\UserGateway;
 
 Request::match('carts/:cart_id/orders');
 
@@ -68,7 +68,7 @@ if (!CartOfferGateway::instance()->whereBy('cart_id', $cartId)->exists()) {
 }
 
 if (!empty($data['city_id'])) {
-    $data['city'] = \Pina\Modules\Regions\CityGateway::instance()->whereId($data['city_id'])->value('city');
+    $data['city'] = CityGateway::instance()->whereId($data['city_id'])->value('city');
 } else {
     $data['city_id'] = 0;
 }
@@ -82,9 +82,12 @@ if (!empty($data['shipping_method_id'])) {
     $data['shipping_subtotal'] = $shippingFee ? $shippingFee : 0;
 }
 
-$subtotal = CartOfferGateway::instance()
-    ->whereBy('cart_id', $cartId)
-    ->calculatedSubtotalValue();
+$cos = CartOfferGateway::instance()->whereBy('cart_id', $cartId)->prepareForAdding();
+
+$subtotal = 0;
+foreach ($cos as $k => $co) {
+    $subtotal += $co['actual_price'] * $co['amount'];
+}
 
 $coupon = CouponGateway::instance()->select('*')
     ->whereBy('enabled', 'Y')
@@ -114,7 +117,7 @@ if (empty($orderId)) {
     return Response::internalError();
 }
 
-OrderOfferGateway::instance()->addFromCart($orderId, CartOfferGateway::instance()->whereBy('cart_id', $cartId));
+OrderOfferGateway::instance()->addFromCart($orderId, $cos);
 OrderOfferGateway::instance()->whereBy('order_id', $orderId)->update(['amount_status' => 'processed']);
 CartOfferGateway::instance()->whereBy('cart_id', $cartId)->delete();
 

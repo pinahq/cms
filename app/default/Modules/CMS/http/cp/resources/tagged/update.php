@@ -9,9 +9,9 @@ Request::match('cp/:cp/resources/:id/tagged');
 
 $resourceId = Request::input('id');
 
-$tagIds = array_unique(explode(',', Request::input('tags')));
+$tagId = Request::input('tag_id');
 
-TagGateway::instance()->whereNotId($tagIds)->whereBy('resource_id', $resourceId)->update(['resource_id' => 0]);
-TagGateway::instance()->whereId($tagIds)->update(['resource_id' => $resourceId]);
+TagGateway::instance()->whereNotId($tagId)->whereBy('resource_id', $resourceId)->update(['resource_id' => 0]);
+TagGateway::instance()->whereId($tagId)->update(['resource_id' => $resourceId]);
 
 return Response::ok();

@@ -7,6 +7,7 @@ use Pina\Arr;
 use Pina\Modules\CMS\TagGateway;
 use Pina\Modules\CMS\ResourceTypeGateway;
 use Pina\Modules\CMS\TagTypeGateway;
+use Pina\Modules\CMS\Tag;
 
 Request::match('products/:resource_id/offers');
 
@@ -14,31 +15,51 @@ $resourceId = Request::input('resource_id');
 
 $cartId = !empty($_COOKIE['cart_id']) ? $_COOKIE['cart_id'] : '';
 $gw = OfferGateway::instance()
-        ->select('id')
-        ->select('price')
-        ->select('sale_price')
-        ->select('actual_price')
-        ->select('amount')
-        ->select('min_amount')
-        ->select('fold')
-        ->whereBy('resource_id', $resourceId)
-        ->whereBy('enabled', 'Y')
-        ->where('offer.amount > 0')
-        ->withCartOfferAmount($cartId)
-        ->calculate('(offer.amount - LEAST(offer.amount,IFNULL(cart_offer.amount,0))) as available_amount')
-        ->having('available_amount > 0')
-        ->groupBy('offer.id');
-    
+    ->select('id')
+    ->select('price')
+    ->select('sale_price')
+    ->select('actual_price')
+    ->select('amount')
+    ->select('min_amount')
+    ->select('fold')
+    ->whereBy('resource_id', $resourceId)
+    ->whereBy('enabled', 'Y')
+    ->where('offer.amount > 0')
+    ->withCartOfferAmount($cartId)
+    ->calculate('(offer.amount - LEAST(offer.amount,IFNULL(cart_offer.amount,0))) as available_amount')
+    ->having('available_amount > 0')
+    ->groupBy('offer.id');
+
 if (Request::input('display') === 'table') {
     $gw->withConcatUniqueTags($resourceId);
     $os = $gw->get();
-    return ['offers' => $os];
+    
+    $tagTypes = [];
+    foreach ($os as $o) {
+        $tags = Tag::unserialize($o['tags']);
+        $tagTypes = array_unique(array_merge($tagTypes, array_column($tags, 'type')));
+    }
+    $discountPercent = Request::input('discount_percent');
+    if (!empty($discountPercent)) {
+        foreach ($os as $k => $v) {
+            $os[$k]['discount_percent'] = $discountPercent;
+        }
+        $os = Discount::applyList($os, 'discount_percent');
+    }
+    return ['offers' => $os, 'tag_types' => $tagTypes];
 }
 
 
 $gw->leftJoin(OfferTagGateway::instance()->on('offer_id', 'id')->calculate("GROUP_CONCAT(tag_id ORDER BY tag_id ASC SEPARATOR ',') as tag_ids"));
 $os = $gw->get();
 
+$discountPercent = Request::input('discount_percent');
+if (!empty($discountPercent)) {
+    foreach ($os as $k => $v) {
+        $os[$k]['discount_percent'] = $discountPercent;
+    }
+    $os = Discount::applyList($os, 'discount_percent');
+}
 foreach ($os as $k => $o) {
     $os[$k]['tag_ids'] = explode(',', $o['tag_ids']);
 }

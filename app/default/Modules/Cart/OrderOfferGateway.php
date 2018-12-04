@@ -28,6 +28,7 @@ class OrderOfferGateway extends TableDataGateway
         'price' => "decimal(12,2) NOT NULL DEFAULT '0.00'",
         'sale_price' => "decimal(12,2) NOT NULL DEFAULT '0.00'",
         'cost_price' => "decimal(12,2) NOT NULL DEFAULT '0.00'",
+        'discount_percent' => "decimal(12,2) NOT NULL DEFAULT '0.00'",
     ];
     protected static $indexes = [
         'PRIMARY KEY' => 'id',
@@ -103,9 +104,9 @@ class OrderOfferGateway extends TableDataGateway
             WHERE order.id = $id;";
     }
     
-    public function addFromCart($orderId, $gw)
+    public function addFromCart($orderId, $cartOffers)
     {
-        $this->context('order_id', $orderId)->insert($gw->prepareForAdding());
+        $this->context('order_id', $orderId)->insert($cartOffers);
     }
 
     public function add($orderId, $offerId, $amount)

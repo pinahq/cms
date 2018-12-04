@@ -1,6 +1,6 @@
 <?php
 
-namespace Pina\Modules\Users;
+namespace Pina\Modules\CMS;
 
 use Pina\Event;
 use Pina\Log;

@@ -7,8 +7,6 @@ use Pina\Response;
 
 Request::match('cp/:cp/submissions/:id');
 
-Request::filter('intval', 'id');
-
 $id = Request::input('id');
 if (empty($id)) {
     return Response::badRequest();

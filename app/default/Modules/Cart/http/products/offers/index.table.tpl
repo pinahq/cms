@@ -30,28 +30,49 @@
     <input type="submit" class="btn btn-primary" value="Купить" />
 {elseif $offers}
     <table class="table">
-        {foreach from=$offers item=offer}
+        <thead>
             <tr>
-                <td>{$offer.tags|nl2br}</td>
-                <td>{$offer.price|format_price}</td>
-                <td>
-                    {if $offer.available_amount ge 50}
-                        <div class="input-group">
-                            <a href="#" class="input-group-addon js-minus"><span class="glyphicon glyphicon-minus"></span></a>
-                            <input type="text" name="amount[{$offer.id}]" class="form-control amount" style="min-width: 50px;" 
-                                   value="0" data-min-amount="0" data-max-amount="{$offer.available_amount}" data-fold="{$offer.fold}" class="amount" />
-                            <a href="#" class="input-group-addon js-plus"><span class="glyphicon glyphicon-plus"></span></a>
-                        </div>
-                    {else}
-                        <select name="amount[{$offer.id}]" class="amount">
-                            {section loop=$offer.available_amount+1 start=$offer.min_amount name=amount}
-                                <option>{$smarty.section.amount.index}</option>
-                            {/section}
-                        </select>
-                    {/if}
-                </td>
+                {foreach from=$tag_types item=tag_type}
+                    <th>{$tag_type}</th>
+                    {/foreach}
+                <th>Доступно</th>
+                <th>Цена</th>
+                <th>Кол-во</th>
             </tr>
-        {/foreach}
+        </thead>
+        <tbody>
+            {foreach from=$offers item=offer}
+                <tr>
+                    {foreach from=$tag_types item=tag_type}
+                        <td>{$offer.tags|tag:$tag_type}</td>
+                    {/foreach}
+                    <td>{$offer.available_amount}</td>
+                    <td>
+                        <span class="price-sale">{$offer.actual_price|format_price}</span>
+                        {if $offer.actual_price lt $offer.price}
+                            <del class="price-compare">{$offer.price|format_price}</del>
+                        {/if}
+                    </td>
+                    <td>
+                        {if $offer.available_amount ge 50}
+                            <div class="input-group">
+                                <a href="#" class="input-group-addon js-minus"><span class="glyphicon glyphicon-minus"></span></a>
+                                <input type="text" name="amount[{$offer.id}]" class="form-control amount" style="min-width: 50px;" 
+                                       value="0" data-min-amount="0" data-max-amount="{$offer.available_amount}" data-fold="{$offer.fold}" class="amount" />
+                                <a href="#" class="input-group-addon js-plus"><span class="glyphicon glyphicon-plus"></span></a>
+                            </div>
+                        {else}
+                            <select name="amount[{$offer.id}]" class="amount">
+                                <option>0</option>
+                                {section loop=$offer.available_amount+1 start=$offer.min_amount name=amount}
+                                    <option>{$smarty.section.amount.index}</option>
+                                {/section}
+                            </select>
+                        {/if}
+                    </td>
+                </tr>
+            {/foreach}
+        </tbody>
     </table>
     <input type="submit" class="btn btn-primary" value="Купить" />
 {/if}

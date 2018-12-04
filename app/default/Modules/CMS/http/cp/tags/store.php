@@ -10,7 +10,7 @@ Request::match('tags');
 
 $tag = Request::input('tag');
 
-$parts = explode(': ', $tag, 2);
+$parts = explode(':', $tag, 2);
 $parts = array_map('trim', $parts);
 $tag = implode(': ', $parts);
 

@@ -1,10 +1,10 @@
 <?php
+
 namespace Pina\Modules\Cart;
 
 use Pina\Request;
 use Pina\Response;
-use Pina\Modules\Import\ImportGateway;
-use Pina\Modules\Import\Schema;
+use Pina\Modules\CMS\ImportGateway;
 
 Request::match('cp/:cp/offer-imports/:import_id/schema');
 
@@ -24,24 +24,25 @@ if ($import['status'] != 'confirm') {
 $schema = json_decode($import['schema'], true);
 $names = [];
 $len = strlen('tag');
-$offerTagLen=strlen('offer_tag');
-foreach ($schema as $k => $v) {
-    $name = '';
-    if (strncmp($v, 'tag', $len) === 0) {
-        $name = trim(substr($v, $len + 1));
-        $schema[$k] = 'tag';
+$offerTagLen = strlen('offer_tag');
+if (is_array($schema)) {
+    foreach ($schema as $k => $v) {
+        $name = '';
+        if (strncmp($v, 'tag', $len) === 0) {
+            $name = trim(substr($v, $len + 1));
+            $schema[$k] = 'tag';
+        }
+        if (strncmp($v, 'offer_tag', $offerTagLen) === 0) {
+            $name = trim(substr($v, $offerTagLen + 1));
+            $schema[$k] = 'offer_tag';
+        }
+        $names[] = $name;
     }
-    if (strncmp($v, 'offer_tag', $offerTagLen) === 0) {
-        $name = trim(substr($v, $offerTagLen + 1));
-        $schema[$k] = 'offer_tag';
-    }
-    $names[] = $name;
 }
-
 $header = json_decode($import['header'], true);
 
 $list = array('' => 'Пропустить');
-$list = array_merge($list, Schema::schemaFields());
+$list = array_merge($list, (new ImportOfferSchema)->schemaFields());
 
 return [
     'import' => $import,

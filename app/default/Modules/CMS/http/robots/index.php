@@ -41,6 +41,9 @@ Disallow: /RELEASE_NOTES.txt
 ## Do not crawl sub category pages that are sorted
 Disallow: /*?sort=*
 
+## Do not crawl sub category pages that are filtered
+Disallow: /*?tag_id*
+
 ## Do not crawl checkout and user account pages
 Disallow: /carts/
 Disallow: /auth

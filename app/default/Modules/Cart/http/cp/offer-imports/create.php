@@ -3,8 +3,8 @@
 namespace Pina\Modules\Cart;
 
 use Pina\Request;
-use Pina\Modules\Import\Reader;
-use Pina\Modules\Import\ImportGateway;
+use Pina\Modules\CMS\ImportReaderRegistry;
+use Pina\Modules\CMS\ImportGateway;
 
 
 $importId = Request::input('import_id');
@@ -12,6 +12,6 @@ $importId = Request::input('import_id');
 $import = ImportGateway::instance()->find($importId);
 
 return [
-    'formats' => Reader::getAvailableFormats(),
+    'formats' => ImportReaderRegistry::getAvailableFormats(),
     'import' => $import,
 ];

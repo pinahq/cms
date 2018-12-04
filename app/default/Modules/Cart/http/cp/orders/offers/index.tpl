@@ -9,8 +9,11 @@
                 <tr>
                     <th colspan="2">Товар</th>
                     <th>Статус</th>
-                    <th>Кол-во</th>
                     <th>Цена</th>
+                    <th>Цена распродажи</th>
+                    <th>Скидка</th>
+                    <th>Итоговая цена</th>
+                    <th>Кол-во</th>
                 </tr>
             </thead>
             <tbody>
@@ -28,10 +31,27 @@
                             {$offer.order_offer_status_title}
                         </td>
                         <td>
-                            {$offer.amount}
+                            {$offer.price|format_price}
+                        </td>
+                        <td>
+                            {if $offer.sale_price gt 0}
+                                {$offer.sale_price|format_price}
+                            {else}
+                                -
+                            {/if}
+                        </td>
+                        <td>
+                            {if $offer.discount_percent|rtrim:"0."}
+                                {$offer.discount_percent|rtrim:"0."}%
+                            {else}
+                                -
+                            {/if}
                         </td>
                         <td>
                             {$offer.actual_price|format_price}
+                        </td>
+                        <td>
+                            {$offer.amount}
                         </td>
                     </tr>
 

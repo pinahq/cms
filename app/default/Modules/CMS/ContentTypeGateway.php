@@ -11,7 +11,6 @@ class ContentTypeGateway extends TableDataGateway
         'id' => "int(10) NOT NULL AUTO_INCREMENT",
         'type' => "varchar(32) NOT NULL DEFAULT ''",
         'title' => "VARCHAR(32) NOT NULL DEFAULT ''",
-        'module_id' => "INT(10) NOT NULL DEFAULT 0",
     );
 
     protected static $indexes = array(

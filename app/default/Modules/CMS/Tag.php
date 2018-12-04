@@ -11,8 +11,13 @@ class Tag
     {
         $tags = explode("\n", $s);
         foreach ($tags as $k => $v) {
-            $tags[$k] = explode(': ', $v, 2);
-            $tags[$k] = array_map('trim', $tags[$k]);
+            $parts = array_map('trim', explode(': ', $v, 2));
+            $count = \count($parts);
+            if ($count > 1) {
+                $tags[$k] = ['type' => $parts[0], 'value' => $parts[1]];
+            } elseif ($count === 1)  {
+                $tags[$k] = ['type' => '', 'value' => $parts[0]];
+            }
         }
         return $tags;
     }
@@ -36,14 +41,13 @@ class Tag
 
         $tags = Tag::unserialize($tags);
         foreach ($tags as $tag) {
-            if (!isset($tag[0]) || !isset($tag[1])) {
+            if (!isset($tag['type']) || !isset($tag['value'])) {
                 continue;
             }
-            $title = str_replace('{' . $tag[0] . '}', $tag[1], $title);
+            $title = str_replace('{' . $tag['type'] . '}', $tag['value'], $title);
         }
 
         $title = preg_replace('/{[^}]*}/si', '', $title);
-
         return trim($title);
     }
 

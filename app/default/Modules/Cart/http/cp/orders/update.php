@@ -26,7 +26,7 @@ if (!empty($data['status'])) {
 }
 
 if (!empty($data['city_id'])) {
-    $data['city'] = \Pina\Modules\Regions\CityGateway::instance()->whereId($data['city_id'])->value('city');
+    $data['city'] = CityGateway::instance()->whereId($data['city_id'])->value('city');
 }
 
 $o = OrderGateway::instance()

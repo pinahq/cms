@@ -3,7 +3,7 @@
 namespace Pina\Modules\PayPal;
 
 use Pina\InstallationInterface;
-use Pina\ModuleRegistry;
+use Pina\Modules\CMS\ModuleRegistry;
 use Pina\Modules\Cart\PaymentMethodGateway;
 use Pina\Modules\CMS\ConfigGateway;
 
@@ -12,13 +12,6 @@ class Installation implements InstallationInterface
 
     public static function install()
     {
-        $moduleId = ModuleRegistry::add(new Module());
-
-        if (empty($moduleId)) {
-            throw new \Exception('can not install module ' . __NAMESPACE__);
-            return;
-        }
-
         self::createPaymentMethods();
         self::createConfig();
     }
@@ -122,7 +115,7 @@ class Installation implements InstallationInterface
 
     public static function remove()
     {
-        #echo 'remove';
+        
     }
 
 }

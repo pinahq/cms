@@ -18,6 +18,7 @@
     <li class="active"><a href="{link get="cp/:cp/offer-imports/:import_id/schema" import_id=$params.import_id}">{t}Schema{/t}</a></li>
     <li><a href="{link get="cp/:cp/offer-imports/:import_id/replaces" import_id=$params.import_id}" class="action">{t}Replaces{/t}</a></li>
     <li><a href="{link get="cp/:cp/offer-imports/:import_id/keys" import_id=$params.import_id}">{t}Key fields{/t}</a></li>
+    <li><a href="{link get="cp/:cp/offer-imports/:import_id/settings" import_id=$params.import_id}">{t}Settings{/t}</a></li>
 </ul>
 
 <div class="panel">
@@ -55,6 +56,20 @@
                         </td>
                     </tr>
                 {/foreach}
+                <tr>
+                    <td>
+
+                    </td>
+                    <td>
+                        -
+                    </td>
+                    <td>
+                        <select name="schema[]" class="js-schema form-control">
+                            {foreach from=$list item=item key=key}
+                                <option value="{$key}">{$item}</option>
+                            {/foreach}
+                        </select>
+                    </td>
             </tbody>
         </table>
 

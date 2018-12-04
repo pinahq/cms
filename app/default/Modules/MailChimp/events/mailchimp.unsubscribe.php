@@ -6,7 +6,7 @@ use Pina\Event;
 use Pina\Log;
 use Pina\Mail;
 use Pina\Arr;
-use Pina\Modules\Users\UserGateway;
+use Pina\Modules\CMS\UserGateway;
 use Pina\Modules\CMS\Config;
 
 try {

@@ -5,7 +5,7 @@ namespace Pina\Modules\MailChimp;
 use Pina\Arr;
 use Pina\Log;
 use Pina\Modules\CMS\Config;
-use Pina\Modules\Users\UserGateway;
+use Pina\Modules\CMS\UserGateway;
 
 try {
     $config = Config::getNamespace(__NAMESPACE__);

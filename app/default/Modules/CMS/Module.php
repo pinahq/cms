@@ -3,15 +3,14 @@
 namespace Pina\Modules\CMS;
 
 use Pina\ModuleInterface;
-
 use Pina\App;
 use Pina\Input;
 use Pina\Event;
 use Pina\Url;
 use Pina\Access;
 use Pina\Route;
-use Pina\Request;
 use Pina\DispatcherRegistry;
+use Pina\Composer;
 
 class Module implements ModuleInterface
 {
@@ -20,7 +19,7 @@ class Module implements ModuleInterface
     {
         return __DIR__;
     }
-    
+
     public function getNamespace()
     {
         return __NAMESPACE__;
@@ -33,11 +32,22 @@ class Module implements ModuleInterface
 
     public function http()
     {
-        
+
+        Access::permit('/users/:user_id', 'self');
+        $user = \Pina\Modules\Auth\Auth::user();
+        if (!empty($user)) {
+            Route::context("user_id", $user['id']);
+
+            Access::addCondition('self', array('user_id' => $user['id']));
+
+            Access::addGroup($user['group']);
+        }
+
+
         Route::context('cp', 'ru');
 
         Access::permit('/cp/:cp', 'root');
-        
+
         //Do not dispatch system resources
         if (!in_array(App::resource(), ['sitemap.xml', 'robots.txt']) && !preg_match('/^sitemap\/.*\.xml/si', App::resource())) {
             DispatcherRegistry::register(new Dispatcher());
@@ -56,13 +66,22 @@ class Module implements ModuleInterface
                 }
             }
         }
-        
+
+        \Pina\Composer::placeView('config.menu', 'cp/:cp/modules/block', array('display' => 'nav'));
         \Pina\Composer::placeView('config.menu', 'cp/:cp/tag-types/block', ['display' => 'nav']);
         \Pina\Composer::placeView('config.menu', 'cp/:cp/menus/block', array('display' => 'nav'));
         \Pina\Composer::placeView('config.menu', 'cp/:cp/resource-types/block', array('display' => 'nav'));
-        
+        \Pina\Composer::placeModule('menu.list', 'cp/:cp/resource-types', array('display' => 'menu'));
+        \Pina\Composer::placeModule('menu.news', 'cp/:cp/submissions', array('display' => 'menu', 'date' => 'today'));
+
+        Composer::placeView('sidebar::catalog', 'users/block', array('display' => 'sidebar'));
+        Composer::placeView('header::nav1', 'users/block', array('display' => 'nav'));
+
         //routing
         return [
+            '/',
+            '/errors',
+            '/favicon',
             'heading-content',
             'text-content',
             'list-content',
@@ -79,21 +98,31 @@ class Module implements ModuleInterface
             'gallery-content',
             'resource-list-content',
             'cp',
+            'password-recovery',
+            'registration',
+            'subscription',
+            'users',
         ];
     }
-    
+
     public function cli()
     {
         return [
             'resources'
         ];
     }
-    
+
     public function boot()
     {
+        App::container()->share(\Pina\Modules\Auth\UserInterface::class, User::class);
+        
+        ImportReaderRegistry::register('csv', __('CSV'), \Pina\Modules\CMS\CSVImportReader::class);
+        ImportReaderRegistry::register('excel', __('Excel Spreadsheet'), \Pina\Modules\CMS\ExcelImportReader::class);
+        
         Event::subscribe($this, 'submission.created');
+        Event::subscribe($this, 'user.subscribed', 'subscription.mail');
     }
-    
+
 }
 
 function __($string)

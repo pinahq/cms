@@ -77,7 +77,7 @@ class Products
 
         if ($sale == 'Y') {
             $gwSearch->innerJoin(
-                OfferGateway::instance()->on('resource_id')->where('offer.actual_price < offer.price')
+                ResourcePriceGateway::instance()->on('resource_id')->where('resource_price.sale_price < resource_price.price')->where('resource_price.sale_price > 0')
             );
             $needGroupBy = true;
         }
@@ -95,10 +95,16 @@ class Products
         $paging = new Paging($this->page, $this->paging);
         $gwSearch->paging($paging, $needGroupBy ? "DISTINCT resource_tree.resource_id" : false);
         
+        $needGetGroupBy = false;
+        
         $gw = \Pina\SQL::subquery($gwSearch->select('resource_id')->select('resource_order'))->alias('search');
         $gw->innerJoin(
-            ResourceGatewayExtension::instance()->on('id', 'resource_id')->setListView()
+            ResourceGatewayExtension::instance()->on('id', 'resource_id')->setListView($needGetGroupBy)
         );
+        
+        if ($needGetGroupBy) {
+            $gw->groupBy('resource.id');
+        }
 
         switch ($this->sort) {
             case 'price': 
@@ -139,6 +145,8 @@ class Products
         }
 
         $rs = $gw->get();
+        
+        $rs = Discount::applyList($rs, 'discount_percent');
 
         return [
             'tag_types' => \Pina\Arr::group($tags, 'type'),
@@ -180,7 +188,8 @@ class Products
         $paging = new Paging($this->page, $this->paging);
         $gw->paging($paging, $needGroupBy ? "DISTINCT resource.id" : false);
 
-        $gw->setListView();
+        $needGetGroupBy = false;
+        $gw->setListView($needGetGroupBy);
 
         switch ($this->sort) {
             case 'price': $gw->orderBy('actual_price ASC');
@@ -191,14 +200,16 @@ class Products
                 break;
             case '-title': $gw->orderBy('resource.title', 'DESC');
                 break;
-            default: $gw->orderBy('tag_' . $resourceTagId . '.order', 'ASC');
+            default: $gw->orderBy('resource.order', 'ASC');
                 break;
         }
 
-        if ($needGroupBy) {
+        if ($needGroupBy || $needGetGroupBy) {
             $gw->groupBy('resource.id');
         }
         $rs = $gw->get();
+        $rs = Discount::applyList($rs, 'discount_percent');
+        
         $pg = $paging->fetch();
 
         $tags = ResourceFilterTagGateway::instance()->getFilterTags($gwTags->on('id', 'resource_id'));

@@ -102,6 +102,11 @@ class OfferGateway extends TableDataGateway
                     . $this->getResourceAmountUpdateTrigger('OLD', ' - IF(OLD.amount>0,1,0)')
                 . ' END IF;'
             ],
+            [
+                ResourceGatewayExtension::instance()->getTable(),
+                'after delete',
+                'DELETE FROM offer WHERE resource_id=OLD.id;'
+            ]
         ];
     }
     
@@ -166,7 +171,7 @@ class OfferGateway extends TableDataGateway
         
         foreach ($tagIds as $tagId) {
             $this->innerJoin(
-                OfferTagGateway::instance()->alias('tag_'.$tagId)->on('offer_id', 'id')->whereBy('tag_id', $tagId)
+                OfferTagGateway::instance()->alias('tag_'.$tagId)->on('offer_id', 'id')->onBy('tag_id', $tagId)
             );
         }
         

@@ -63,6 +63,7 @@
             <div class="import-params-block" data-format-type="csv|excel">
                 {include file="Skin/form-line-input.tpl" name="header_row" value=$import.header_row|default:1 title="Header line number"|t type="number"}
                 {include file="Skin/form-line-input.tpl" name="start_row" value=$import.start_row|default:2 title="Data start line number"|t type="number"}
+                {include file="Skin/form-line-input.tpl" name="path_delimiter" value=$import.path_delimiter|default:'//' title="Section delimiter"|t type="text"}
             </div>
 
         </fieldset>

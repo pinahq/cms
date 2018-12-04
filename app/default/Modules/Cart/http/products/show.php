@@ -14,7 +14,7 @@ Request::match('products/:resource_id');
 
 $resourceId = Request::input('resource_id');
 
-$r = ResourceGatewayExtension::instance()
+$gw = ResourceGatewayExtension::instance()
     ->whereId($resourceId)
     ->whereEnabled()
     ->select('*')
@@ -23,11 +23,22 @@ $r = ResourceGatewayExtension::instance()
     ->withImage()
     //->withTags(DetailsTagTypeGateway::instance())
     ->withListTags()
-    ->withPriceIfExists()
-    ->first();
+    ->withPriceIfExists();
+
+$needGroupBy = false;
+$gw->withDiscount($needGroupBy);
+if ($needGroupBy) {
+    $gw->groupBy('resource.id');
+}
+    
+$r = $gw->first();
 
 if (empty($r) || empty($r['id'])) {
     return Response::notFound();
+}
+
+if (isset($r['discount_percent'])) {
+    $r['actual_price'] = Discount::apply($r['price'], $r['actual_price'], $r['discount_percent']);
 }
 
 $tags = TagGateway::instance()

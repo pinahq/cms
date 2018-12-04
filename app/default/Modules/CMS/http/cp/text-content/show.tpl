@@ -46,8 +46,7 @@
                     plugins: [
                         'advlist autolink lists link hr anchor wordcount code table textcolor codesample'
                     ],
-                    toolbar1: 'removeformat | bold italic underline strikethrough | alignleft aligncenter alignright alignjustify | bullist numlist table',
-                    toolbar2: 'blockquote codesample | hr link unlink | forecolor backcolor | code',
+                    toolbar1: 'removeformat | bold italic underline strikethrough | alignleft aligncenter alignright alignjustify | bullist numlist table | blockquote codesample | hr link unlink | forecolor backcolor | code',
                     init_instance_callback: function (editor) {
                         editor.on('Change', function (e) {
                             $(textEditorInput).val(editor.getContent());

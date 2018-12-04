@@ -69,7 +69,7 @@
 
         <p>{$resource.resource_tags|tag:"Артикул"}</p>
 
-        {module get="products/:resource_id/offers" resource_id=$resource.id}
+        {module get="products/:resource_id/offers" resource_id=$resource.id discount_percent=$resource.discount_percent}
 
         <div>
             <ul class="nav nav-tabs" role="tablist">

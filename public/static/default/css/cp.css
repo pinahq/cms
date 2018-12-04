@@ -960,3 +960,15 @@ table td[class*=col-],table th[class*=col-] {
 .form-group .help-block {
     display: block;
 }
+
+.select2-container {
+    margin-top: 8px !important;
+}
+
+.select2-container--default .select2-selection--single {
+    border-top: none !important;
+    border-left: none !important;
+    border-right: none !important;
+    border-radius: 0 !important;
+    border-color: #ccc !important;
+}

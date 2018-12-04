@@ -3,7 +3,7 @@
 namespace Pina\Modules\Cart;
 
 use Pina\Request;
-use Pina\Modules\Import\ImportGateway;
+use Pina\Modules\CMS\ImportGateway;
 
 Request::match('cp/:cp/imports');
 

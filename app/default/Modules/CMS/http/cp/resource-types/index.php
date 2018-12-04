@@ -6,7 +6,9 @@ use Pina\Request;
 
 Request::match('cp/:cp/resource-types');
 
-$rts = ResourceTypeGateway::instance()->get();
+$filters = Request::intersect('tree');
+
+$rts = ResourceTypeGateway::instance()->whereFields($filters)->get();
 return [
     'resource_types' => $rts,
 ];

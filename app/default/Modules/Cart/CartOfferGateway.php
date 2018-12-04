@@ -64,11 +64,6 @@ class CartOfferGateway extends TableDataGateway
         ");
     }
     
-    public function calculateSubtotal()
-    {
-        return $this->calculate('offer.actual_price * '.$this->getAlias().'.amount as cart_offer_subtotal');
-    }
-    
     public function calculatedSubtotalValue()
     {
         return $this->db->one(
@@ -100,13 +95,17 @@ class CartOfferGateway extends TableDataGateway
     {
         $cloneGw = clone($this);
         
-        $data = $this
+        $needGroupBy = false;
+        $gw = $this
             ->select('amount')
             ->innerJoin(
                 OfferGateway::instance()->on('id', 'offer_id')->select('actual_price')->selectAs('id', 'offer_id')->select('price')->select('sale_price')->select('cost_price')
             )
             ->innerJoin(
-                ResourceGateway::instance()->on('id', 'resource_id')->select('title')->select('image_id')
+                ResourceGatewayExtension::instance()->on('id', 'resource_id')
+                ->select('title')
+                ->select('image_id')
+                ->withDiscount($needGroupBy)
             )
             ->leftJoin(
                 ResourceTagsGateway::instance()->on('resource_id')->selectAs('tags', 'resource_tags')
@@ -115,15 +114,21 @@ class CartOfferGateway extends TableDataGateway
                 \Pina\SQL::subquery(
                     $cloneGw->withOfferTag()
                 )->alias('offer_tag')->on('offer_id')->selectAs('tags', 'offer_tags')
-            )
-            ->groupBy('cart_offer.offer_id')
-            ->get();
+            );
         
-        foreach ($data as $k => $item) {
-            $data[$k]['tags'] = $data[$k]['resource_tags']."\n".$data[$k]['offer_tags'];
+        if ($needGroupBy) {
+            $gw->groupBy('cart_offer.offer_id');
+        }
+            
+        $cos = $gw->get();
+        
+        $cos = Discount::applyList($cos, 'discount_percent');
+        
+        foreach ($cos as $k => $co) {
+            $cos[$k]['tags'] = $cos[$k]['resource_tags']."\n".$cos[$k]['offer_tags'];
         }
         
-        return $data;
+        return $cos;
     }
 
 

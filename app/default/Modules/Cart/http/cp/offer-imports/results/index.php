@@ -4,8 +4,8 @@ namespace Pina\Modules\Cart;
 
 use Pina\Request;
 use Pina\Response;
-use Pina\Modules\Import\ImportGateway;
-use Pina\Modules\Import\ImportResourceGateway;
+use Pina\Modules\CMS\ImportGateway;
+use Pina\Modules\CMS\ImportResourceGateway;
 
 Request::match('cp/:cp/offer-imports/:import_id/results');
 

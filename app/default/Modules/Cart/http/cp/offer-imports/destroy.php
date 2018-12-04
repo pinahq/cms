@@ -3,13 +3,11 @@ namespace Pina\Modules\Cart;
 
 use Pina\Request;
 use Pina\Response;
-use Pina\Modules\Import\ImportGateway;
-use Pina\Modules\Import\ImportPreviewGateway;
-use Pina\Modules\Import\ImportErrorGateway;
+use Pina\Modules\CMS\ImportGateway;
+use Pina\Modules\CMS\ImportPreviewGateway;
+use Pina\Modules\CMS\ImportErrorGateway;
 
 Request::match('cp/:cp/offer-imports/:id');
-
-Request::filter('intval', 'id');
 
 $importId = Request::input("id");
 

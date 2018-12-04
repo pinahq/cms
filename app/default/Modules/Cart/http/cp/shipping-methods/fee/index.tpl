@@ -75,7 +75,7 @@
                     xhr.onreadystatechange = function () {
                         if (xhr.readyState == 4 && xhr.status == 200) {
                             // Handle response.
-                            alert(xhr.responseText);
+                            document.location.reload();
                         }
                     };
                     reader.onload = function (evt) {

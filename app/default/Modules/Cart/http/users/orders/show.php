@@ -18,10 +18,10 @@ $o = OrderGateway::instance()->whereBy('user_id', $userId)
         OrderStatusGateway::instance()->on('id', 'order_status_id')->selectAs('title', 'order_status_title')
     )
     ->leftJoin(
-        \Pina\Modules\Regions\CountryGateway::instance()->on('key', 'country_key')->select('country')
+        CountryGateway::instance()->on('key', 'country_key')->select('country')
     )
     ->leftJoin(
-        \Pina\Modules\Regions\RegionGateway::instance()->on('key', 'region_key')->on('country_key', 'country.key')->select('region')
+        RegionGateway::instance()->on('key', 'region_key')->on('country_key', 'country.key')->select('region')
     )
     ->find($orderId);
 

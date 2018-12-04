@@ -9,7 +9,7 @@ use Pina\App;
 Request::match('cp/:cp/products/:resource_id/offers');
 
 $data = Request::all();
-$intKeys = ['price', 'amount', 'cost_price', 'sale_price'];
+$intKeys = ['price', 'amount', 'fold', 'min_amount', 'cost_price', 'sale_price'];
 foreach ($intKeys as $key) {
     if (isset($data[$key]) && empty($data[$key])) {
         $data[$key] = 0;

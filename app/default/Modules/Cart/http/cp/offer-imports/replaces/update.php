@@ -4,7 +4,7 @@ namespace Pina\Modules\Cart;
 
 use Pina\Request;
 use Pina\Response;
-use Pina\Modules\Import\ImportGateway;
+use Pina\Modules\CMS\ImportGateway;
 use Pina\Event;
 use Pina\App;
 
@@ -32,11 +32,7 @@ foreach ($replaces as $k => $v) {
     $data[] = array($v['field'], $v['search'], $v['replace']);
 }
 
-ImportGateway::instance()
-    ->whereId($importId)
-    ->update([
-        "replaces" => json_encode($data, JSON_UNESCAPED_UNICODE),
-    ]);
+ImportGateway::instance()->whereId($importId)->setReplaces($data);
 
 Event::trigger('catalog.build-import-preview', $importId);
 

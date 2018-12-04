@@ -1,1 +1,1 @@
-Разработано на <a href="http://www.pinacart.com">Pinacart - скрипт интернет-магазина</a>
+<p class="copyrights"><span class="glyphicon glyphicon-copyright-mark"></span> 2018 <a href="http://alex-yashin.ru/" target="_blank">Alex Yashin</a></p>

@@ -2,57 +2,86 @@
 
 namespace Pina\Modules\Cart;
 
-use Pina\Arr;
-use Pina\Log;
-use Pina\Modules\Import\Import;
-use Pina\Modules\Import\Schema;
+use Pina\Modules\CMS\ResourceImport;
 use Pina\Modules\CMS\TagGateway;
+use Pina\Modules\CMS\ImportResourceGateway;
 
-class OfferImport extends Import
+class OfferImport extends ResourceImport
 {
 
-    protected $offerKeyFields = array('offer_external_id' => 'offer_external_id');
+    protected $offerCreateAllowed = true;
+    protected $offerUpdateAllowed = true;
     protected $lineOfferTags = [];
     protected $lineOfferTagIds = [];
-    
-    public function __construct($importId)
+
+    public function __construct($importId, $importSchema)
     {
-        parent::__construct($importId);
-        
-        if (isset($this->importKeys['offer']) && is_array($this->importKeys['offer'])) {
-            $this->offerKeyFields = [];
-            $keyInfo = Schema::schemaKeyInfo();
-            
-            foreach ($this->importKeys['offer'] as $key) {
-                $keyField = $this->schema[$key];
-                
-                if (isset($keyInfo[$keyField]) && $keyInfo[$keyField] == 'offer') {
-                    $this->offerKeyFields[$keyField] = $keyField;
-                    continue;
-                }
-                
-                if (strncmp($keyField, 'offer_tag ', 10) === 0) {
-                    $tagType = trim(substr($keyField, 10));
-                    if (!isset($this->offerKeyFields['tag_type'])) {
-                        $this->offerKeyFields['tag_type'] = [];
-                    }
-                    $this->offerKeyFields['tag_type'][] = $tagType;
-                }
-                
-            }
-        }
-        
+        parent::__construct($importId, $importSchema);
+
+        $this->offerCreateAllowed = $this->settings['offer_mode'] == '' || $this->settings['offer_mode'] == 'create';
+        $this->offerUpdateAllowed = $this->settings['offer_mode'] == '' || $this->settings['offer_mode'] == 'update';
     }
 
-    private function getOffer($line)
+    protected function importLine($line)
+    {
+        parent::importLine($line);
+
+        if (empty($this->lineResourceId)) {
+            return;
+        }
+
+        $this->getOfferTags($line);
+
+        if ($this->getOffer($line)) {
+            $this->writeOfferTags();
+        }
+    }
+
+    protected function getOfferTags($line)
+    {
+        $this->lineOfferTags = [];
+        $this->lineOfferTagIds = [];
+
+        $tags = $this->extractTags('offer_tag ', $line);
+
+        foreach ($tags as $tag) {
+            list($tagType, $tagTitle) = $tag;
+            $tagId = TagGateway::instance()->getIdOrAdd($tagType . ': ' . $tagTitle);
+            $this->lineOfferTags[$tagType][] = $tagId;
+            $this->lineOfferTagIds[] = $tagId;
+        }
+    }
+
+    protected function getOffer($line)
+    {
+        $keyFields = $this->getKeys('offer');
+        if (empty($keyFields)) {
+            return false;
+        }
+
+        $this->lineOfferId = $this->getId(
+            $line, !empty($this->lineResourceId) ? OfferGateway::instance()->whereBy('resource_id', $this->lineResourceId) : OfferGateway::instance(), $keyFields, $this->lineOfferTags
+        );
+
+        $data = $this->extractOffer($line);
+        if (empty($this->lineOfferId) && $this->offerCreateAllowed) {
+            $this->lineOfferId = OfferGateway::instance()->insertGetId($data);
+            $this->logOfferImport('added');
+            return true;
+        } else if ($this->offerUpdateAllowed) {
+            OfferGateway::instance()->whereId($this->lineOfferId)->update($data);
+            $this->logOfferImport('updated');
+            return true;
+        }
+        $this->logOfferImport('skipped');
+        return false;
+    }
+
+    protected function extractOffer($line)
     {
         $data = $this->extract('offer.', $line);
         $data['resource_id'] = $this->lineResourceId;
 
-        $this->lineOfferId = $this->getId(
-            $line, OfferGateway::instance()->whereBy('resource_id', $this->lineResourceId), $this->offerKeyFields, $this->lineOfferTags
-        );
-        
         $intKeys = ['price', 'amount', 'cost_price', 'sale_price'];
         foreach ($intKeys as $key) {
             if (isset($data[$key]) && empty($data[$key])) {
@@ -60,25 +89,24 @@ class OfferImport extends Import
             }
         }
 
-        $result = 'added';
-        if (empty($this->lineOfferId)) {
-            $this->lineOfferId = OfferGateway::instance()->insertGetId($data);
-        } else if ($this->updateAllowed) {
-            OfferGateway::instance()->whereId($this->lineOfferId)->update($data);
-            $result = 'updated';
-        } else {
-            return false;
-        }
-        
-        if (!empty($this->importId)) {
-            ImportResourceOfferGateway::instance()->insertIgnore([
-                'import_id' => $this->importId,
-                'resource_id' => $this->lineResourceId,
-                'offer_id' => $this->lineOfferId,
-                'import_offer_result' => $result,
-            ]);
-        }
+        return $data;
+    }
 
+    protected function logOfferImport($status)
+    {
+        if (empty($this->importId)) {
+            return;
+        }
+        ImportResourceOfferGateway::instance()->insertIgnore([
+            'import_id' => $this->importId,
+            'resource_id' => $this->lineResourceId,
+            'offer_id' => $this->lineOfferId,
+            'import_offer_result' => $status,
+        ]);
+    }
+
+    protected function writeOfferTags()
+    {
         $links = array();
         foreach ($this->lineOfferTagIds as $tagId) {
             $links[] = array('offer_id' => $this->lineOfferId, 'tag_id' => $tagId);
@@ -93,29 +121,64 @@ class OfferImport extends Import
             ImportOfferTagGateway::instance()->insertIgnore($links);
         }
     }
-    
-    private function getOfferTags($line)
+
+    protected function begin()
     {
-        $this->lineOfferTags = [];
-        $this->lineOfferTagIds = [];
+        parent::begin();
 
-        foreach ($this->schema as $k => $item) {
-            if (!empty($line[$k]) && strncmp($item, 'offer_tag ', 10) === 0) {
-                $tagType = trim(substr($item, 10));
-                $tagTitle = $line[$k];
+        ImportResourceOfferGateway::instance()->whereBy('import_id', $this->importId)->delete();
+    }
 
-                $tagId = TagGateway::instance()->getIdOrAdd($tagType . ': ' . $tagTitle);
-                $this->lineOfferTags[$tagType][] = $tagId;
-                $this->lineOfferTagIds[] = $tagId;
+    protected function finalize()
+    {
+        parent::finalize();
+
+        $this->processOfferMissingStatus();
+        $this->detachOldOfferTags();
+    }
+
+    protected function processOfferMissingStatus()
+    {
+        if (!empty($this->settings['offer_missing_status'])) {
+            $gw = OfferGateway::instance()
+                    ->innerJoin(
+                        ImportResourceGateway::instance()
+                        ->on('resource_id')
+                        ->onBy('import_id', $this->importId)
+                    )->leftJoin(
+                ImportResourceOfferGateway::instance()
+                    ->on('resource_id')
+                    ->on('offer_id', 'id')
+                    ->onBy('import_id', $this->importId)
+                    ->whereNull('status')
+            );
+
+            if ($this->settings['offer_missing_status'] == 'hidden') {
+                $gw->update(array('enabled' => 'N'));
+            } else if ($this->settings['offer_missing_status'] == 'deleted') {
+                $gw->delete();
             }
         }
     }
 
-    protected function importLine($line)
+    protected function detachOldOfferTags()
     {
-        parent::importLine($line);
-        $this->getOfferTags($line);
-        $this->getOffer($line);
+        OfferTagGateway::instance()
+            ->innerJoin(
+                ImportOfferTagGateway::instance()
+                ->alias('used_tag_types')
+                ->on('offer_id')
+                ->on('tag_type_id')
+                ->onBy('import_id', $this->importId)
+            )
+            ->leftJoin(
+                ImportOfferTagGateway::instance()
+                ->on('offer_id')
+                ->on('tag_id')
+                ->onBy('import_id', $this->importId)
+                ->whereNull('tag_type_id')
+            )
+            ->delete();
     }
 
 }

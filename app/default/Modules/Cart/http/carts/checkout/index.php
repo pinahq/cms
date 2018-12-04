@@ -3,8 +3,8 @@
 namespace Pina\Modules\Cart;
 
 use Pina\Request;
-use Pina\Modules\Users\Auth;
-use Pina\Modules\Users\UserGateway;
+use Pina\Modules\Auth\Auth;
+use Pina\Modules\CMS\UserGateway;
 
 Request::match('carts/:cart_id/checkout');
 

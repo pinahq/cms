@@ -4,7 +4,7 @@ namespace Pina\Modules\CMS;
 
 use Pina\Request;
 use Pina\Response;
-use Pina\Modules\Users\Auth;
+use Pina\Modules\Auth\Auth;
 use Pina\Event;
 
 Request::match('submissions');

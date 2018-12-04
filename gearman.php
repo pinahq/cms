@@ -6,8 +6,8 @@ use Pina\Gearman\GearmanEventWorker;
 
 include __DIR__."/bootstrap/autoload.php";
 
-ModuleRegistry::init();
-ModuleRegistry::initModules();
+$modules = App::container()->get(ModuleRegistryInterface::class);
+$modules->boot('gearman');
 
 $worker = new GearmanEventWorker();
 

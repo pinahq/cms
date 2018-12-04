@@ -4,7 +4,7 @@ namespace Pina\Modules\Cart;
 
 use Pina\Request;
 use Pina\Response;
-use Pina\Modules\Import\ImportGateway;
+use Pina\Modules\CMS\ImportGateway;
 
 Request::match('cp/:cp/offer-imports/:import_id/replaces');
 

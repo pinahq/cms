@@ -3,10 +3,7 @@
 namespace Pina\Modules\Cart;
 
 use Pina\TableDataGateway;
-use Pina\Modules\Users\UserGateway;
-
-use Pina\Modules\Regions\CountryGateway;
-use Pina\Modules\Regions\RegionGateway;
+use Pina\Modules\CMS\UserGateway;
 
 /*
 update order set order_status_id = 1 where order_status_id = 0;

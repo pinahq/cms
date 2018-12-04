@@ -7,7 +7,7 @@
                 <thead>
                     <tr>
                         <th>Coupon</th>
-                        <th>Absloute</th>
+                        <th>Absolute</th>
                         <th>Percent</th>
                         <th>Enabled</th>
                     </tr>

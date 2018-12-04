@@ -20,6 +20,7 @@ cp bower_components/jqueryui/themes/ui-darkness/jquery-ui.min.css public/vendor/
 cp -R bower_components/jqueryui/themes/ui-darkness/images public/vendor/jqueryui/
 
 cp bower_components/jquery-form/jquery.form.js public/vendor/
+cp bower_components/jquery-form/src/jquery.form.js public/vendor/
 mkdir public/vendor/jquery-file-upload/
 cp -R bower_components/jquery-file-upload/* public/vendor/jquery-file-upload/
 cp bower_components/modernizr/modernizr.js public/vendor/

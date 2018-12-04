@@ -7,8 +7,8 @@ use Pina\Request;
 use Pina\Response;
 use Pina\Event;
 
-use Pina\Modules\Import\ImportGateway;
-use Pina\Modules\Import\FileUploader;
+use Pina\Modules\CMS\ImportGateway;
+use Pina\Modules\CMS\ImportFileUploader;
 
 Request::match("cp/:cp/offer-imports");
 
@@ -21,11 +21,11 @@ if (Request::input('import_id')) {
 }
 
 if (Request::input('path_reuse') != 'Y') {
-    if (FileUploader::validate('path') === false) {
+    if (ImportFileUploader::validate('path') === false) {
         return Response::badRequest('Wrong file', 'path');
     }
 
-    list($path, $fileName) = FileUploader::move('path');
+    list($path, $fileName) = ImportFileUploader::move('path');
     
     if (empty($path) || empty($fileName)) {
         return Response::internalError(__('Can not create file'));
@@ -39,11 +39,7 @@ $data['status'] = 'read';
 $data['format'] = Request::input('format');
 $data['header_row'] = intval(Request::input('header_row'));
 $data['start_row'] = intval(Request::input('start_row'));
-
-$fields = Request::input('fields');
-$data['fields'] = is_array($fields)?join(',', $fields):'';
-$data['missing_status'] = Request::input('missing_status');
-$data['mode'] = Request::input('update_mode');
+$data['path_delimiter'] = Request::input('path_delimiter');
 
 $importId = ImportGateway::instance()->insertGetId($data);
 

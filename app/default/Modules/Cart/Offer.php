@@ -31,7 +31,7 @@ class Offer
         $tagHeaders = Arr::merge($resourceTagHeaders, $offerTagHeaders);
         
         $schema = [];
-        $schema[] = ['offer_id', __('Offer ID')];
+        $schema[] = ['id', __('Offer ID')];
         
         foreach ($tagHeaders as $tagHeader) {
             $schema[] = ['tags', $tagHeader];
@@ -65,8 +65,8 @@ class Offer
                 if ($column == 'tags') {
                     $value = '';
                     foreach ($tags as $tagKey => $tag) {
-                        if ($tag[0] === $columnSpec[1]) {
-                            $value = $tag[1];
+                        if ($tag['type'] === $columnSpec[1]) {
+                            $value = $tag['value'];
                             unset($tags[$tagKey]);
                             break;
                         }

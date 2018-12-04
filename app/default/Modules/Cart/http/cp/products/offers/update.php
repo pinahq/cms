@@ -16,7 +16,7 @@ $offerId = Request::input('id');
 $resourceId = Request::input('resource_id');
 
 $data = Request::all();
-$intKeys = ['price', 'amount', 'cost_price', 'sale_price'];
+$intKeys = ['price', 'amount', 'fold', 'min_amount', 'cost_price', 'sale_price'];
 foreach ($intKeys as $key) {
     if (isset($data[$key]) && empty($data[$key])) {
         $data[$key] = 0;

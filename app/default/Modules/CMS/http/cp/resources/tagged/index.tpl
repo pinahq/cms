@@ -6,14 +6,54 @@
 <div class="panel">
     <div class="panel-body">
         {form method="put" action="cp/:cp/resources/:id/tagged" id=$params.resource_id class="form pina-form form-tags"}
-        <div class="form-group">
-            <input name="tags" type="text" class="form-control" />
-        </div>
-        {view get="cp/:cp/tags/block" display="script" tags=$tags}
+        <select name="tag_id" class="form-control" {action_attributes get="cp/:cp/tags"} data-resource-id="{$params.resource_id}">
+            <option value="0"></option>
+            {if $tag}
+                <option value="{$tag.id}" selected="selected">{$tag.tag}</option>
+            {/if}
+        </select>
         <button class="btn btn-primary btn-raised">{t}Save{/t}</button>
         {/form}
     </div>
 </div>
+
+{script src="/vendor/select2/js/select2.min.js"}{/script}
+{style src="/vendor/select2/css/select2.min.css"}{/style}
+{script}
+{literal}
+    <script>
+        $(document).ready(function () {
+            $('select[name=tag_id]').each(function () {
+                var resource = $(this).data('resource');
+                var resourceId = $(this).data('resource-id');
+                $(this).select2({
+                    width: '100%',
+                    allowClear: true,
+                    placeholder: '',
+                    ajax: {
+                        url: '/' + resource,
+                        dataType: 'json',
+                        data: function (params) {
+                            var query = {
+                                q: params.term,
+                                resource_id: [0, resourceId]
+                            };
+                            return query;
+                        },
+                        processResults: function (data) {
+                            var r = {results: []};
+                            for (var i in data) {
+                                r.results.push({id: data[i].id, text: data[i].tag});
+                            }
+                            return r;
+                        }
+                    }
+                });
+            });
+        });
+    </script>
+{/literal}
+{/script}
 <div class="row">
     <div class="col-md-6 col-md-push-6">
         <div class="hidden-xs"  style="visibility: hidden">
@@ -62,7 +102,7 @@
         {include file="Skin/paging.tpl"}
         {/link_context}
 
-        {view get="cp/:cp/resources/block" reorder_resource_id=$params.resource_id reorder="tag-reorder" display=items}
+        {view get="cp/:cp/resources/block" reorder_resource_id=$params.resource_id reorder="reorder" display=items}
 
         {link_context parent_id=$params.parent_id resource_type_id=$params.resource_type_id status=$params.status}
         {include file="Skin/paging.tpl"}
@@ -109,19 +149,11 @@
 {literal}
     <script>
         $('.resources').sortable({
-            placeholder: "col col-xs-6 col-sm-4 col-md-3 col-lg-2  resource",
-            start: function (event, ui) {
-                var elem = $(event.toElement).parents('.resource');
-                var height = elem.height();
-                var width = elem.width();
-                ui.placeholder.html('<div class="col-sm-4 resource" style="border:width:' + width + 'px;height:' + height + 'px;">&nbsp;</div>');
-            },
             stop: function (event, ui) {
                 var resource = $(this).data('resource');
                 var method = $(this).data('method');
                 var headers = $(this).data('csrf-token') ? {'X-CSRF-Token': $(this).data('csrf-token')} : {};
                 var data = [];
-                var order = 0;
                 $('.resources .resource').each(function () {
                     data.push($(this).data('id'));
                 });

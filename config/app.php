@@ -1,9 +1,6 @@
 <?php
 
 return array(
-    'host' => 'pinacms.local',
-    'scheme' => 'http',
-    #'template' => '',
     'version' => '1',
     'path' => realpath(__DIR__.'/../app'),
     'charset' => 'utf-8',
@@ -16,6 +13,7 @@ return array(
     ),
     'cronLockFile' => '/tmp/pina-lock.txt',
     'sharedDepencies' => [
-        \Pina\EventQueueInterface::class => \Pina\CronEventQueue::class
+        \Pina\ModuleRegistryInterface::class => \Pina\Modules\CMS\ModuleRegistry::class,
+        \Pina\EventQueueInterface::class => \Pina\CronEventQueue::class,
     ],
 );

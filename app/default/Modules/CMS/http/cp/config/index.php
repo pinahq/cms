@@ -4,7 +4,8 @@ namespace Pina\Modules\CMS;
 
 use Pina\Request;
 use Pina\Response;
-use Pina\ModuleRegistry;
+use Pina\App;
+use Pina\ModuleRegistryInterface;
 
 if (in_array(Request::input('display'), ['menu', 'sidebar'])) {
     $modules = ConfigGateway::instance()
@@ -14,7 +15,7 @@ if (in_array(Request::input('display'), ['menu', 'sidebar'])) {
         ->get();
     foreach ($modules as $k => $module) {
         $namespace = $module['namespace'];
-        $m = ModuleRegistry::get($namespace);
+        $m = App::container()->get(ModuleRegistryInterface::class)->get($namespace);
         if (empty($m)) {
             unset($modules[$k]);
             continue;

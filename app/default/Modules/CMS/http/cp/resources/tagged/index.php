@@ -12,12 +12,11 @@ Request::match('cp/:cp/resources/:resource_id/tagged');
 $resourceId = Request::input('resource_id');
 $resourceTypeId = Request::input('resource_type_id');
 
-$tags = TagGateway::instance()->whereBy('resource_id', $resourceId)->get();
-$tagIds = Arr::column($tags, 'id');
+$tag = TagGateway::instance()->whereBy('resource_id', $resourceId)->first();
 
 $rs = [];
 $paging = new Paging(Request::input('page'), Request::input("paging") ? Request::input("paging") : 24);
-if (!empty($tagIds)) {
+if (!empty($tag['id'])) {
     $gw = ResourceGateway::instance()->select('*')->withResourceType()->withUrl()->withChildCount()->withListTags();
 
     if ($resourceTypeId) {
@@ -32,7 +31,9 @@ if (!empty($tagIds)) {
     }
 
 
-    $gw->whereTagIds($tagIds, true);
+    $gw->whereTagIds($tag['id']);
+    
+    $gw->orderBy('resource.order', 'ASC');
 
     $gw->paging($paging, 'DISTINCT resource.id');
 
@@ -42,5 +43,5 @@ if (!empty($tagIds)) {
 return [
     'resources' => $rs,
     'paging' => $paging->fetch(),
-    'tags' => $tags,
+    'tag' => $tag,
 ];

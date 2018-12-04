@@ -5,7 +5,7 @@ namespace Pina\Modules\Cart;
 use Pina\Request;
 use Pina\Response;
 use Pina\App;
-use Pina\Modules\Users\Auth;
+use Pina\Modules\Auth\Auth;
 
 Request::match('carts/:cart_id/products');
 

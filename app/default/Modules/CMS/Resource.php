@@ -66,13 +66,13 @@ class Resource
         }
     }
 
-    public static function fillTreeWithPath($path, $resourceTypeId)
+    public static function fillTreeWithPath($path, $resourceTypeId, $delimiter = '/')
     {
 
         $title = $path;
         $parentId = 0;
 
-        $pos = strrpos($path, '/');
+        $pos = strrpos($path, $delimiter);
         if ($pos !== false) {
             $left = substr($path, 0, $pos);
             $title = substr($path, $pos + 1);
@@ -128,7 +128,7 @@ class Resource
     public static function handleCopy($resourceId)
     {
         $newResourceId = ResourceGateway::instance()->insertGetId(
-            ResourceGateway::instance()->whereId($resourceId)->selectAllExcept(['id', 'resource', 'resource_external_id'])->first()
+            ResourceGateway::instance()->whereId($resourceId)->selectAllExcept(['id', 'resource', 'external_id'])->first()
         );
 
         $gateways = [

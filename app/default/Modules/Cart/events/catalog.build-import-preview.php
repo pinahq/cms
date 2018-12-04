@@ -4,12 +4,12 @@ namespace Pina\Modules\Cart;
 
 use Pina\Event;
 use Pina\Log;
-use Pina\Modules\Import\Preview;
+use Pina\Modules\CMS\ImportPreview;
 
 $importId = Event::data();
 
 try {
-    $preview = new Preview($importId);
+    $preview = new ImportPreview($importId, new ImportOfferSchema);
     $preview->build();
 } catch (\Exception $e) {
     Log::error('catalog.build-import-preview', $e->getMessage());

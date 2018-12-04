@@ -21,11 +21,11 @@
 {if !$params.token}
     <p>Введите поисковую строку</p>
 {else}
-    {module get="products" 
-    parent_id=$params.parent_id
-    page=$params.page
-    sort=$params.sort
-    token=$params.token
-    tag_id=$params.tag_id}
+    {composer position="search" 
+        parent_id=$params.parent_id
+        page=$params.page
+        sort=$params.sort
+        token=$params.token
+        tag_id=$params.tag_id}
 {/if}
 </div>

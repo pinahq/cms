@@ -3,29 +3,38 @@
 namespace Pina\Modules\CMS;
 
 use Pina\InstallationInterface;
-use Pina\ModuleRegistry;
+use Pina\Hash;
 
 class Installation implements InstallationInterface
 {
 
     public static function install()
     {
-        $moduleId = ModuleRegistry::add(new Module());
-
-        if (empty($moduleId)) {
-            throw new \Exception('can not install module ' . __NAMESPACE__);
-            return;
-        }
-
-        self::createResourceType($moduleId);
-        self::createContentType($moduleId);
+        self::createAdminUser();
+        self::createResourceType();
+        self::createContentType();
         self::createConfig();
     }
 
-    public static function createResourceType($moduleId)
+    public static function createAdminUser()
+    {
+        $adminExists = UserGateway::instance()->whereBy('group', 'root')->exists();
+        if (empty($adminExists)) {
+            $adminExists = UserGateway::instance()->whereBy('email', 'admin')->exists();
+        }
+        if (empty($adminExists)) {
+            UserGateway::instance()->insert(array(
+                'email' => 'admin',
+                'password' => Hash::make('admin'),
+                'group' => 'root',
+                'status' => 'active'
+            ));
+        }
+    }
+
+    public static function createResourceType()
     {
         $data = array(
-            'module_id' => $moduleId,
             'type' => 'pages',
             'title' => 'Страница',
             'tree' => 'Y',
@@ -35,10 +44,9 @@ class Installation implements InstallationInterface
         }
     }
 
-    public static function createContentType($moduleId)
+    public static function createContentType()
     {
         $data = array(
-            'module_id' => $moduleId,
             'type' => 'heading-content',
             'title' => 'Заголовок',
         );
@@ -47,7 +55,6 @@ class Installation implements InstallationInterface
         }
 
         $data = array(
-            'module_id' => $moduleId,
             'type' => 'text-content',
             'title' => 'Текст',
         );
@@ -56,7 +63,6 @@ class Installation implements InstallationInterface
         }
 
         $data = array(
-            'module_id' => $moduleId,
             'type' => 'image-content',
             'title' => 'Изображение',
         );
@@ -65,7 +71,6 @@ class Installation implements InstallationInterface
         }
 
         $data = array(
-            'module_id' => $moduleId,
             'type' => 'list-content',
             'title' => 'Список',
         );
@@ -74,7 +79,6 @@ class Installation implements InstallationInterface
         }
 
         $data = array(
-            'module_id' => $moduleId,
             'type' => 'gallery-content',
             'title' => 'Галерея',
         );
@@ -83,7 +87,6 @@ class Installation implements InstallationInterface
         }
 
         $data = array(
-            'module_id' => $moduleId,
             'type' => 'resource-list-content',
             'title' => 'Список страниц',
         );
@@ -228,7 +231,7 @@ class Installation implements InstallationInterface
 
     public static function remove()
     {
-        #echo 'remove';
+        
     }
 
 }

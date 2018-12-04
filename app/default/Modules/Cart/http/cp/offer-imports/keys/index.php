@@ -4,8 +4,7 @@ namespace Pina\Modules\Cart;
 
 use Pina\Request;
 use Pina\Response;
-use Pina\Modules\Import\ImportGateway;
-use Pina\Modules\Import\Schema;
+use Pina\Modules\CMS\ImportGateway;
 
 Request::match('cp/:cp/offer-imports/:import_id/keys');
 
@@ -19,16 +18,19 @@ if (empty($import) || !is_array($import)) {
 
 $schema = json_decode($import['schema'], true);
 
-$keyInfo = Schema::schemaKeyInfo();
+$importSchema = new ImportOfferSchema();
+$keyInfo = $importSchema->schemaKeyInfo();
 $keySchema = [];
-foreach ($schema as $line) {
-	$parts = explode(' ', $line);
-	$keySchema[] = isset($keyInfo[$parts[0]])?$keyInfo[$parts[0]]:'';
+if (is_array($schema)) {
+    foreach ($schema as $line) {
+        $parts = explode(' ', $line);
+        $keySchema[] = isset($keyInfo[$parts[0]]) ? $keyInfo[$parts[0]] : '';
+    }
 }
 
 return [
     'import' => $import,
-    'schema' => Schema::prepareUserSchemaToDisplay($schema),
+    'schema' => $importSchema->format($schema),
     'key_schema' => $keySchema,
     'header' => json_decode($import['header'], true),
     'keys' => json_decode($import['keys'], true)

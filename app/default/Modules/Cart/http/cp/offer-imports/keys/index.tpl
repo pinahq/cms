@@ -18,6 +18,7 @@
     <li><a href="{link get="cp/:cp/offer-imports/:import_id/schema" import_id=$params.import_id}">{t}Schema{/t}</a></li>
     <li><a href="{link get="cp/:cp/offer-imports/:import_id/replaces" import_id=$params.import_id}" class="action">{t}Replaces{/t}</a></li>
     <li class="active"><a href="{link get="cp/:cp/offer-imports/:import_id/keys" import_id=$params.import_id}">{t}Key fields{/t}</a></li>
+    <li><a href="{link get="cp/:cp/offer-imports/:import_id/settings" import_id=$params.import_id}">{t}Settings{/t}</a></li>
 </ul>
 
 <div class="panel">
@@ -100,7 +101,7 @@
         $(".form-keys").on("success", function (event, packet, status, xhr) {
             var parts = document.location.pathname.split('/');
             var path = parts.slice(0, parts.length - 1).join('/');
-            document.location = document.location.origin + path + '/external-keys?changed=' + Math.random();
+            document.location = document.location.origin + path + '/settings?changed=' + Math.random();
         });
     </script>
 {/literal}

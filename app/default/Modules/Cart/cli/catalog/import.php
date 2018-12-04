@@ -5,7 +5,6 @@ namespace Pina\Modules\Cart;
 use Pina\Request;
 use Pina\Log;
 use Pina\CLI;
-use Pina\Modules\Import\OfferImport;
 
 CLI::arguments()->add([
     'import_id' => [

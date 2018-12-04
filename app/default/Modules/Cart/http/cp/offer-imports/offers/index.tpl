@@ -18,6 +18,7 @@
     <li><a href="{link get="cp/:cp/offer-imports/:import_id/schema" import_id=$params.import_id}">{t}Schema{/t}</a></li>
     <li><a href="{link get="cp/:cp/offer-imports/:import_id/replaces" import_id=$params.import_id}" class="action">{t}Replaces{/t}</a></li>
     <li><a href="{link get="cp/:cp/offer-imports/:import_id/keys" import_id=$params.import_id}">{t}Key fields{/t}</a></li>
+    <li><a href="{link get="cp/:cp/offer-imports/:import_id/settings" import_id=$params.import_id}">{t}Settings{/t}</a></li>
 </ul>
 
 <ul class="catalog-allrow-manage-icon" style="position:absolute;margin:84px 0px 0px -60px;">
@@ -55,7 +56,7 @@
                 <tbody>
                     {if $rows}
                         {foreach from=$rows item=row}
-                            <tr {if $row.error eq 'Y'} class="danger"{/if}>
+                            <tr {if $row.error_cells} class="danger"{/if}>
                                 <td>
                                     {$row.row}
                                 </td>
@@ -70,7 +71,11 @@
                                         style="{if $row.error_cells.$key}cursor: help; color: red; font-weight: bold;{/if} {if not $schema.$key}opacity: 0.2;{/if}"
                                         {if $row.error_cells.$key}title="{$row.error_cells.$key}"{/if}
                                         >
-                                        {$cell}
+                                        {if $cell}
+                                            {$cell}
+                                        {elseif $row.error_cells.$key}
+                                            <i>{$row.error_cells.$key}</i>
+                                        {/if}
                                     </td>
                                 {/foreach}
                             </tr>
@@ -107,48 +112,6 @@
     </div>
 </div>
 
-{*
-<br>
-{form action="cp/:cp/offer-imports/:import_id/offers" method="post" import_id=$params.import_id}
-<fieldset class="operations">
-<div class="row">
-<h3>Выберите ключевые поля</h3>
-{foreach from=$key_fields key=group item=key_field}
-<div class="col col-sm-3">
-{if $group eq 'tag_type'}
-{foreach from=$key_field item=tag_type name=tag_type}
-<div class="togglebutton">
-<label>
-<input type="checkbox" name="import_key_field[tag_type][]" value="{$tag_type}" />
-<span style="display:inline-block;min-width: 150px;text-align: left;">{$tag_type}</span>
-</label>
-</div>
-{math equation="ceil(x / 2)" x=$smarty.foreach.tag_type.total assign="half"}
-{if $smarty.foreach.tag_type.iteration eq $half}
-</div>
-<div class="col col-sm-3">
-{/if}
-{/foreach}
-{else}
-<div class="togglebutton">
-<label>
-<input type="checkbox" name="import_key_field[]" value="{$key_field}" />
-<span style="display:inline-block;min-width: 150px;text-align: left;">{$key_field}</span>
-</label>
-</div>
-{/if}
-</div>
-{/foreach}
-</div>
-<div class="button-bar row">
-<div class="col-sm-12">
-<button class="btn btn-primary">Импортировать</button>
-<button class="btn btn-default pina-action" {action_attributes delete="cp/:cp/offer-imports/:import_id" import_id=$params.import_id} data-redirect="{link get="cp/:cp/offer-imports" from="deleted"}">Отменить</button>
-</div>
-</div>
-</fieldset>
-{/form}
-*}
 {script src="/static/default/js/pina.skin.js"}{/script}
 {script src="/static/default/js/pina.request.js"}{/script}
 {script src="/static/default/js/pina.action.js"}{/script}
