@@ -52,4 +52,4 @@ cd {your_pina_root};php pinacli.php system.cron
 
 [Добавляем страничку](https://youtu.be/koICvoSfsBw)
 
-[Простейший каталог](https://youtu.be/L5Il93XhJRA)
+[Управление каталогом с помощью тегов](https://youtu.be/L5Il93XhJRA)
