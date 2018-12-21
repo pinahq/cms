@@ -16,7 +16,7 @@ class UserTagGateway extends TableDataGateway
     protected static $indexes = [
         'PRIMARY KEY' => ['user_id', 'tag_id'],
     ];
-    
+
     public function getTriggers()
     {
         return [

@@ -9,10 +9,7 @@
                 {img image=$resource|@mine:"image" width="220" height=220 trim=4 class="not-rotation img-responsive front"}
             </a>
 
-            <div><strong>{$resource.tags|tag:"Бренд"}</strong></div>
-
-            <a href="/{$resource.url}">{$resource.title}</a>
-
+            <a href="/{$resource.url}">{$resource.title|tag_pattern:$type.pattern:$resource.tags}</a>
 
             <div class="product-price">
                 {if $resource.actual_price ne ''}

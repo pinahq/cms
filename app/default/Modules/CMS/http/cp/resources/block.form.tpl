@@ -14,7 +14,7 @@
         <div class="col-sm-10">
             <div class="togglebutton" style="margin: 1rem 0;">
                 <label>
-                    <input type="checkbox" name="enabled" value="Y" {if $resource.enabled eq 'Y'}checked="checked"{/if} />
+                    <input type="checkbox" name="enabled" value="Y" {if $resource.enabled eq 'Y' || !$resource}checked="checked"{/if} />
                 </label>
             </div>
         </div>

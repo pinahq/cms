@@ -153,7 +153,7 @@
         });
 
         if ($(".cart-form .offer-tag").length) {
-            $(".btn-buy").attr('disabled', 'disabled').before('<div class="btn-buy-message" style="font-size: 18px;color:#a94442;margin-bottom: 20px;">Выберите размер</div>');
+            $(".btn-buy").attr('disabled', 'disabled').before('<div class="btn-buy-message" style="font-size: 18px;color:#a94442;margin-bottom: 20px;">Выберите параметры</div>');
         }
 
 

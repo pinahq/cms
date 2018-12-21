@@ -51,13 +51,6 @@
                         editor.on('Change', function (e) {
                             $(textEditorInput).val(editor.getContent());
                         });
-
-                        editor.on('blur', function (e) {
-
-                            if (!$editor.text()) {
-                                $editor.text("Введите текст...")
-                            }
-                        });
                     }
                 });
 

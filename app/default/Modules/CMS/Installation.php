@@ -14,6 +14,7 @@ class Installation implements InstallationInterface
         self::createResourceType();
         self::createContentType();
         self::createConfig();
+        self::setHomepageImage();
     }
 
     public static function createAdminUser()
@@ -227,6 +228,39 @@ class Installation implements InstallationInterface
                 'order' => "12"
             ],
         ]);
+    }
+    
+    public static function setHomepageImage()
+    {
+        if (!ContentGateway::instance()->exists()) {
+            $textConentTypeId = ContentTypeGateway::instance()->whereBy('type', 'text-content')->id();
+            ContentGateway::instance()->insert([
+                "resource_id" => 0,
+                "slot" => "hometop",
+                "text" => '<p><img style="width: 100%;" src="static/default/images/homepage.jpg" /></p>',
+                "params" => '{}',
+                "content_type_id" => $textConentTypeId,
+                "order" => 0,
+            ]);
+            $headingConentTypeId = ContentTypeGateway::instance()->whereBy('type', 'heading-content')->id();
+            ContentGateway::instance()->insert([
+                "resource_id" => 0,
+                "slot" => "home",
+                "text" => 'PinaCMS',
+                "params" => '{"h":"h2"}',
+                "content_type_id" => $headingConentTypeId,
+                "order" => 0,
+            ]);
+            ContentGateway::instance()->insert([
+                "resource_id" => 0,
+                "slot" => "home",
+                "text" => '<p>Не забудьте установить и настроить модули в разделе панели администратора: Настройки -&gt; Модули.</p>',
+                "params" => '{}',
+                "content_type_id" => $textConentTypeId,
+                "order" => 1,
+            ]);
+        }
+        
     }
 
     public static function remove()
