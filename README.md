@@ -54,4 +54,4 @@ cd {your_pina_root};php pinacli.php system.cron
 
 [Управление каталогом с помощью тегов](https://youtu.be/L5Il93XhJRA)
 
-[Импорт каталога из произвольного XLS-файла и файла на десятки тысяч позиций] (https://youtu.be/ZTx9ScgX7u8)
+[Импорт каталога из произвольного XLS-файла и файла на десятки тысяч позиций](https://youtu.be/ZTx9ScgX7u8)
