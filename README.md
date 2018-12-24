@@ -56,4 +56,4 @@ cd {your_pina_root};php pinacli.php system.cron
 
 [Импорт каталога из произвольного XLS-файла и файла на десятки тысяч позиций](https://youtu.be/ZTx9ScgX7u8)
 
-[Пример каталога на 233 000 товаров без кэширования] (https://youtu.be/gnrLE-iPOjw)
+[Пример каталога на 233 000 товаров без кэширования](https://youtu.be/gnrLE-iPOjw)
