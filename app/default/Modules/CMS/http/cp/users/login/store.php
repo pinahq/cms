@@ -4,6 +4,7 @@ namespace Pina\Modules\CMS;
 
 use Pina\Request;
 use Pina\Response;
+use Pina\Modules\Auth\Auth;
 
 $userId = Request::input('pid');
 

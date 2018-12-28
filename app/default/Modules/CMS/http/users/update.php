@@ -9,8 +9,6 @@ use Pina\Event;
 
 $userId = Request::input('id');
 
-Request::filter('strip_tags trim', 'firstname lastname');
-
 if (!Request::input('subscribed')) {
     Request::set('subscribed', 'N');
 }

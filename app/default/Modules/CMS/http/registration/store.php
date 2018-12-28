@@ -33,7 +33,8 @@ if ($errors) {
     return Response::badRequest()->setErrors($errors);
 }
 
-if ($captcha = App::container()->get('captcha')) {
+if (App::container()->has('captcha')) {
+    $captcha = App::container()->get('captcha');
     if (!$captcha->verify()) {
         return Response::badRequest(__('Пройдите проверку капчи'), 'captcha');
     }
