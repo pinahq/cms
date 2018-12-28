@@ -21,3 +21,5 @@
 
 {slot name="page"}
 {/form}
+
+{composer position="page.bottom" resource_id=$resource.id}
