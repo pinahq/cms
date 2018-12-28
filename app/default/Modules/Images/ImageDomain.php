@@ -100,7 +100,7 @@ class ImageDomain extends \Pina\FileManager {
         $pathinfo = pathinfo($filename);
         $ext = !empty($pathinfo["extension"]) ? strtolower($pathinfo["extension"]) : '';
 
-        $souce_filename = strtolower(\Pina\Token::translit($pathinfo["filename"]));
+        $souce_filename = strtolower($pathinfo["filename"]);
         $filename = static::newFileName($souce_filename, $ext);
 
         $filename = static::prepareFilename($source, $filename);

@@ -71,13 +71,13 @@ class Resource
 
         $title = $path;
         $parentId = 0;
-
+        
         $pos = strrpos($path, $delimiter);
         if ($pos !== false) {
             $left = substr($path, 0, $pos);
-            $title = substr($path, $pos + 1);
-
-            $parentId = self::fillTreeWithPath($left, $resourceTypeId);
+            $title = substr($path, $pos + strlen($delimiter));
+            
+            $parentId = self::fillTreeWithPath($left, $resourceTypeId, $delimiter);
         }
 
         $data = [
@@ -97,7 +97,7 @@ class Resource
 
     public static function generateUniqueResource($string)
     {
-        $key = strtolower(\Pina\Token::translit($string));
+        $key = strtolower(Transliteration::get($string));
         if (strlen($key) > 60) {
             $key = substr($key, 0, 60);
             $i = strrpos($key, "-");

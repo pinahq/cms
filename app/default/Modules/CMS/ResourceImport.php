@@ -80,7 +80,7 @@ class ResourceImport extends Import
 
                 if (!$imageId) {
                     $filename = $this->lineResourceId . '-' . basename($line[$key]);
-                    $imageId = ImageDomain::saveUrl($line[$key], $filename);
+                    $imageId = ImageDomain::saveUrl($line[$key], Transliteration::get($filename));
                 }
 
                 $isAssigned = ResourceImageGateway::instance()->whereBy('image_id', $imageId)->whereBy('resource_id', $this->lineResourceId)->exists();
@@ -136,7 +136,7 @@ class ResourceImport extends Import
     {
         foreach ($this->schema as $k => $item) {
             if ($item == 'parent' && !empty($line[$k])) {
-
+                
                 $resourceId = Resource::fillTreeWithPath(
                         $line[$k], $this->parentResourceTypeId, $this->pathDelimiter
                 );
