@@ -4,7 +4,6 @@ namespace Pina\Modules\CMS;
 
 use Pina\Modules\Auth\Auth;
 
-use Pina\Hash;
 use Pina\Request;
 use Pina\Response;
 use Pina\Validate;

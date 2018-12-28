@@ -3,7 +3,6 @@
 namespace Pina\Modules\CMS;
 
 use Pina\InstallationInterface;
-use Pina\Hash;
 
 class Installation implements InstallationInterface
 {

@@ -6,7 +6,6 @@ use Pina\Modules\Auth\Auth;
 
 use Pina\Request;
 use Pina\Response;
-use Pina\Hash;
 
 Request::match('cp/:cp/users/:id');
 

@@ -4,7 +4,6 @@ namespace Pina\Modules\CMS;
 
 use Pina\Modules\Auth\UserInterface;
 use Pina\Arr;
-use Pina\Hash;
 
 class User implements UserInterface
 {

@@ -5,7 +5,6 @@ namespace Pina\Modules\CMS;
 use Pina\Modules\Auth\Auth;
 use Pina\Request;
 use Pina\Response;
-use Pina\Hash;
 use Pina\App;
 
 Request::match('cp/:cp/users/');

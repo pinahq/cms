@@ -4,7 +4,6 @@ namespace Pina\Modules\CMS;
 
 use Pina\Request;
 use Pina\Response;
-use Pina\Hash;
 use Pina\App;
 
 if (!Request::input('new_password')) {

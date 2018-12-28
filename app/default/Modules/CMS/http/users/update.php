@@ -2,7 +2,6 @@
 
 namespace Pina\Modules\CMS;
 
-use Pina\Hash;
 use Pina\Request;
 use Pina\Response;
 use Pina\Event;
