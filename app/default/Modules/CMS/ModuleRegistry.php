@@ -6,7 +6,6 @@ use Pina\ModuleRegistryInterface;
 use Pina\App;
 use Pina\Access;
 use Pina\ModuleInterface;
-use Pina\DB;
 
 class ModuleRegistry extends \Pina\ModuleRegistry
 {
@@ -16,7 +15,7 @@ class ModuleRegistry extends \Pina\ModuleRegistry
         parent::__construct();
 
         $table = ModuleGateway::instance()->getTable();
-        $db = DB::get();
+        $db = App::container()->get(\Pina\DatabaseDriverInterface::class);
         $exists = $db->one("SHOW TABLES LIKE '" . $table . "'");
         if (!$exists) {
             return;

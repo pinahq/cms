@@ -1,7 +1,7 @@
 {
     "require": {
         "php":">=5.3.0",
-        "pinahq/framework": "0.5.*",
+        "pinahq/framework": "0.6.3",
         "phpoffice/phpexcel": "1.8.*",
         "nxp/math-executor": "^0.2.0",
         "paypal/merchant-sdk-php": "3.12.*",

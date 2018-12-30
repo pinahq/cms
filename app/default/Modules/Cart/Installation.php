@@ -256,15 +256,13 @@ class Installation implements InstallationInterface
 
     public static function loadDirectories()
     {
-        $config = \Pina\Modules\CMS\Config::getNamespace(__NAMESPACE__);
-
-        $encoding = empty($config['csv_charset']) ? 'utf8' : $config['csv_charset'];
-        $delimiter = empty($config['csv_delimiter']) ? ';' : ($config['csv_delimiter']);
+        $encoding = 'utf8';
+        $delimiter = ',';
         $enclosure = '"';
         
         $module = new Module();
 
-        $import = new CountryImport($delimiter, $enclosure, $encoding);
+        $import = new CountryImport($delimiter, $enclosure, 'utf8');
         $import->importFromFile($module->getPath().'/data/ru/countries.csv');
         
         $import = new RegionImport($delimiter, $enclosure, $encoding);

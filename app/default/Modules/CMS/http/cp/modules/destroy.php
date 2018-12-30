@@ -45,7 +45,7 @@ if (class_exists($className)) {
 
 $upgrades = App::getUpgrades();
 
-$db = DB::get();
+$db = App::container()->get(\Pina\DatabaseDriverInterface::class);
 $db->batch($upgrades);
 
 return Response::ok();

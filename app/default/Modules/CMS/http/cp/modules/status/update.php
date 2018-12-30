@@ -23,7 +23,7 @@ if (Request::input('enabled') == 'Y') {
 
 $upgrades = App::getUpgrades();
 
-$db = DB::get();
+$db = App::container()->get(\Pina\DatabaseDriverInterface::class);
 $db->batch($upgrades);
 
 return Response::ok()->json(['enabled' => Request::input('enabled')]);

@@ -29,7 +29,7 @@ App::container()->get(\Pina\ModuleRegistryInterface::class)->add($module);
 
 $upgrades = App::getUpgrades();
 
-$db = DB::get();
+$db = App::container()->get(\Pina\DatabaseDriverInterface::class);
 $db->batch($upgrades);
 
 $className = $namespace . '\\Installation';

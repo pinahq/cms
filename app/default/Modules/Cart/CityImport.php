@@ -38,13 +38,10 @@ class CityImport extends CSVImport
     public function finalize(&$data)
     {
         parent::finalize($data);
-
-        $new = [];
+        
         foreach ($data as $k => $v) {
             if (empty($v['id'])) {
                 unset($data[$k]);
-                unset($v['id']);
-                $new[] = $v['id'];
             }
         }
 
@@ -53,8 +50,6 @@ class CityImport extends CSVImport
 
         $deletedIds = array_diff($this->existedIds, $updatedIds);
         CityGateway::instance()->whereId($deletedIds)->delete();
-
-        CityGateway::instance()->insert($new);
     }
 
 }
