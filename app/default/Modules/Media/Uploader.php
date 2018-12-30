@@ -15,7 +15,7 @@ class Uploader
     {
         $file = array_shift($_FILES);
 
-        if (!file_exists($file['tmp_name'])) {
+        if (!is_uploaded_file($file['tmp_name']) || !file_exists($file['tmp_name'])) {
             return null;
         }
 
