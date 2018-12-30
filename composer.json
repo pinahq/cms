@@ -4,6 +4,7 @@
         "pinahq/framework": "0.6.*",
         "phpoffice/phpexcel": "1.8.*",
         "nxp/math-executor": "^0.2.0",
+        "league/flysystem": "1.0.49",
         "paypal/merchant-sdk-php": "3.12.*",
         "retailcrm/api-client-php": "~4.0.0"
     },
