@@ -2,6 +2,8 @@
 
 namespace Pina\Modules\Media;
 
+use Pina\App;
+
 class Media
 {
 
@@ -12,16 +14,47 @@ class Media
         if (!is_uploaded_file($file['tmp_name']) || !file_exists($file['tmp_name'])) {
             return null;
         }
-        
-        return static::save($targetStorageKey, $file['tmp_name'], $file['name'], $file['type']);
+
+        $id = static::save($targetStorageKey, $file['tmp_name'], $file['name'], $file['type']);
+
+        unlink($file['tmp_name']);
+
+        return $id;
     }
-    
+
     public static function save($targetStorageKey, $path, $name, $type)
     {
         $data = static::saveFile($targetStorageKey, $path, $name, $type);
         return static::saveMeta($data);
     }
-    
+
+    public static function saveUrl($targetStorageKey, $url, $name, $type = null)
+    {
+        list($tmpPath, $contentType) = static::cacheUrl($url);
+        $data = static::saveFile($targetStorageKey, $tmpPath, $name, $contentType ?? $type);
+        unlink($tmpPath);
+        return static::saveMeta($data);
+    }
+
+    public static function cacheUrl($url)
+    {
+        $tmpPath = App::tmp() . '/' . uniqid('download', true);
+        $f = fopen($tmpPath, 'w');
+
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_FILE, $f);
+        curl_setopt($ch, CURLOPT_URL, $url);
+        $r = curl_exec($ch);
+
+        $info = curl_getinfo($ch);
+        if ($info['http_code'] !== 200) {
+            throw new \RuntimeException('Can`t download resource: ' . $url);
+        }
+        curl_close($ch);
+
+        return [$tmpPath, $info['content_type'] ?? null];
+    }
+
     public static function saveFile($targetStorageKey, $path, $name, $type)
     {
         $data = [];
@@ -30,23 +63,23 @@ class Media
 
         $config = \Pina\Config::get('media');
         $storageKey = $targetStorageKey ?? $config['default'];
-        
+
         if (!isset($config[$storageKey])) {
             throw new \RuntimeException('Wrong target storage');
         }
 
         $data['storage'] = $storageKey;
         $data['path'] = static::generatePath($name);
-        
+
         $storage = static::getStorage($storageKey);
 
         $stream = fopen($path, 'r+');
         $storage->filesystem()->writeStream($data['path'], $stream);
         fclose($stream);
-        
+
         return $data;
     }
-    
+
     public static function saveMeta($data)
     {
         return MediaGateway::instance()->insertGetId($data);
@@ -66,13 +99,20 @@ class Media
             }
         }
 
+        if (empty($info['mime'])) {
+            $info['mime'] = mime_content_type($path);
+        }
+        if (empty($info['mime'])) {
+            $info['mime'] = $type;
+        }
+
         return [
             'width' => $info[0] ?? 0,
             'height' => $info[1] ?? 0,
-            'type' => $info['mime'] ?? ($type ?? ''),
+            'type' => $info['mime'],
         ];
     }
-    
+
     public static function generatePath($name)
     {
         $chars = "abcdefghijklmnopqrstuvwxyz0123456789";
@@ -89,7 +129,7 @@ class Media
 
 //        $token = $code . '.' . mt_rand();
         $token = $code;
-        
+
         $dir = substr($token, 0, 2) . '/' . substr($token, 2, 2) . '/';
         $filename = $basename . '.' . substr($token, 4) . '.' . $ext;
 
@@ -103,7 +143,7 @@ class Media
             'hash' => md5_file($path),
         ];
     }
-    
+
     public static function getUrl($storageKey, $path)
     {
         if (empty($storageKey)) {
@@ -111,15 +151,15 @@ class Media
         }
         return static::getStorage($storageKey)->getUrl($path);
     }
-    
+
     protected static function getStorage($storageKey)
     {
         static $storages = array();
-        
+
         if (!empty($storages[$storageKey])) {
             return $storages[$storageKey];
         }
-        
+
         return $storages[$storageKey] = new Storage($storageKey);
     }
 

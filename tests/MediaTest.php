@@ -33,6 +33,17 @@ class MediaTest extends TestCase
 
         $this->deleteDir(__DIR__ . '/public/uploads');
     }
+    
+    public function testSaveUrl()
+    {
+        list($tmpPath, $contentType) = Media::cacheUrl('http://php.net/images/logos/php-logo.svg');
+        $this->assertTrue(file_exists($tmpPath));
+        $this->assertEquals('image/svg+xml', $contentType);
+        $data = Media::saveFile('local', $tmpPath, 'php-logo.svg', $contentType);
+        $this->assertEquals('image/svg', $data['type']);
+        unlink($tmpPath);
+        $this->deleteDir(__DIR__ . '/public/uploads');
+    }
 
     protected function deleteDir($dirPath)
     {

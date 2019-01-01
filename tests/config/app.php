@@ -5,6 +5,7 @@ return array(
     'version' => '1',
     'charset' => 'utf-8',
     'timezone' => 'Europe/Moscow',
+    'tmp' => __DIR__ . '/../../var/temp',
     'templater' => array(
         'cache' => __DIR__ . '/../var/cache',
         'compiled' => __DIR__ . '/../var/compiled',
