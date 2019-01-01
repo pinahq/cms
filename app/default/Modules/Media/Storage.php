@@ -30,8 +30,8 @@ class Storage
     public function filesystem()
     {
         if (empty($this->filesystem)) {
-            $adapter = $this->resolveAdapter();
-            $this->filesystem = $this->createFlysystem($adapter);
+            $adapter = $this->resolveAdapter($this->config);
+            $this->filesystem = $this->createFlysystem($adapter, $this->config);
         }
         return $this->filesystem;
     }
@@ -47,6 +47,10 @@ class Storage
 
     public function resolveAdapter(array $config)
     {
+        if (empty($config['driver'])) {
+            throw new \Exception('Missed configuration: driver');
+        }
+        
         switch ($config['driver']) {
             case 'local': return $this->createLocalDriver($config);
             case 's3': return $this->createS3Driver($config);
@@ -81,7 +85,7 @@ class Storage
 
     public function getUrl($path)
     {
-        switch ($config['driver']) {
+        switch ($this->config['driver']) {
             case 'local': return $this->getLocalDriverUrl($path);
             case 's3': return $this->getS3DriverUrl($path);
         }

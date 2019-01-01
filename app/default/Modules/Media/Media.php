@@ -2,12 +2,6 @@
 
 namespace Pina\Modules\Media;
 
-use League\Flysystem\Filesystem as Flysystem;
-use League\Flysystem\Adapter\Local as LocalAdapter;
-use League\Flysystem\AwsS3v3\AwsS3Adapter as S3Adapter;
-use League\Flysystem\AdapterInterface;
-use Pina\Arr;
-
 class Media
 {
 
@@ -23,6 +17,12 @@ class Media
     }
     
     public static function save($targetStorageKey, $path, $name, $type)
+    {
+        $data = static::saveFile($targetStorageKey, $path, $name, $type);
+        return static::saveMeta($data);
+    }
+    
+    public static function saveFile($targetStorageKey, $path, $name, $type)
     {
         $data = [];
         $data += static::getImageProperties($path, $name, $type);
@@ -44,6 +44,11 @@ class Media
         $storage->filesystem()->writeStream($data['path'], $stream);
         fclose($stream);
         
+        return $data;
+    }
+    
+    public static function saveMeta($data)
+    {
         return MediaGateway::instance()->insertGetId($data);
     }
 
