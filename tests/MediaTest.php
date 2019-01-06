@@ -4,6 +4,7 @@ use PHPUnit\Framework\TestCase;
 use Pina\App;
 use Pina\Config;
 use Pina\Modules\Media\Media;
+use Pina\Modules\Media\File;
 
 class MediaTest extends TestCase
 {
@@ -14,34 +15,39 @@ class MediaTest extends TestCase
 
         $config = Config::get('media', 'local');
 
-        $data = Media::saveFile('local', __DIR__ . '/media/homepage.jpg', 'homepage.jpg', 'image/jpeg');
-        $this->assertEquals('image/jpeg', $data['type']);
-        $this->assertEquals(1600, $data['width']);
-        $this->assertEquals(613, $data['height']);
-        $this->assertEquals(220390, $data['size']);
-        $this->assertEquals('fdea996666df5fced230535874c6d6eb', $data['hash']);
-        $this->assertEquals('local', $data['storage']);
-        
-        $this->assertTrue(strpos($data['path'], 'homepage') == 6);
+        $file = new File(__DIR__ . '/media/homepage.jpg', 'homepage.jpg', 'image/jpeg');
+        $data = $file->saveToStorage('local');
+        $this->assertEquals('image/jpeg', $file->getMimeType());
+        $this->assertEquals(1600, $file->getImageWidth());
+        $this->assertEquals(613, $file->getImageHeight());
+        $this->assertEquals(220390, $file->getSize());
+        $this->assertEquals('fdea996666df5fced230535874c6d6eb', $file->getHash());
+        $this->assertEquals('local', $file->getStorageKey());
 
-        $path = rtrim($config['root'], '/') . '/' . ltrim($data['path'], '/');
+        $this->assertTrue(strpos($file->getStoragePath(), 'homepage') == 6);
+
+        $path = rtrim($config['root'], '/') . '/' . ltrim($file->getStoragePath(), '/');
         $this->assertTrue(file_exists($path));
-        
-        $url = Media::getUrl($data['storage'], $data['path']);
-        $exptectedUrl = rtrim($config['url']).'/'.ltrim($data['path']);
+
+        $url = Media::getUrl($file->getStorageKey(), $file->getStoragePath());
+        $exptectedUrl = rtrim($config['url']) . '/' . ltrim($file->getStoragePath());
         $this->assertEquals($exptectedUrl, $url);
 
         $this->deleteDir(__DIR__ . '/public/uploads');
     }
-    
+
     public function testSaveUrl()
     {
-        list($tmpPath, $contentType) = Media::cacheUrl('http://php.net/images/logos/php-logo.svg');
-        $this->assertTrue(file_exists($tmpPath));
-        $this->assertEquals('image/svg+xml', $contentType);
-        $data = Media::saveFile('local', $tmpPath, 'php-logo.svg', $contentType);
-        $this->assertEquals('image/svg', $data['type']);
-        unlink($tmpPath);
+        $file = Media::getUrlCache('http://php.net/images/logos/php-logo.svg', 'php-logo.svg');
+        $this->assertTrue($file->exists());
+        $this->assertEquals('image/svg', $file->getMimeType());
+        $file->moveToStorage('local');
+        
+        $config = Config::get('media', 'local');
+        $path = rtrim($config['root'], '/') . '/' . ltrim($file->getStoragePath(), '/');
+        $this->assertTrue(file_exists($path));
+        
+        $this->assertFalse($file->exists());
         $this->deleteDir(__DIR__ . '/public/uploads');
     }
 

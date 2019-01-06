@@ -7,7 +7,9 @@ use Pina\Response;
 
 use Pina\Modules\Media\Media;
 
-$mediaId = Media::upload();
+$file = Media::getUploadedFile();
+$file->moveToStorage();
+$mediaId = $file->saveMeta();
 
 if (empty($mediaId)) {
     return Response::internalError();
