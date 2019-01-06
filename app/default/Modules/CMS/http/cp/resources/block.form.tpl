@@ -1,4 +1,4 @@
-{module get="cp/:cp/resources/:resource_id/images"
+{module get="cp/:cp/resources/:resource_id/media"
         resource_id=$resource.id
         image_id=$resource.image_id}
 

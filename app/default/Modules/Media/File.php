@@ -130,6 +130,7 @@ class File
 
     protected function generatePath($name)
     {
+//        $name = str_replace(' ', '-', $name);
         $chars = "abcdefghijklmnopqrstuvwxyz0123456789";
         $code = "";
         $length = mt_rand(8, 32);

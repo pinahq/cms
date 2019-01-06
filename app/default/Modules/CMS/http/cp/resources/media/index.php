@@ -13,15 +13,14 @@ $resourceId = Request::input('resource_id');
 
 $media = ResourceMediaGateway::instance()
     ->innerJoin(
-        MediaGateway::instance()->on('id', 'image_id')
+        MediaGateway::instance()->on('id', 'media_id')
             ->select('id')
-            ->select('filename')
-            ->select('url')
+            ->select('storage')
+            ->select('path')
             ->select('width')
             ->select('height')
             ->select('type')
             ->select('size')
-            ->select('alt')
     )
     ->whereBy('resource_id', $resourceId)
     ->orderBy('order', 'asc')
