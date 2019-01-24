@@ -75,7 +75,7 @@
                             data.submit();
                         },
                         done: function (e, data) {
-                            if (!data || !data.result || !data.result['image'] || !data.result['image']['id']) {
+                            if (!data || !data.result || !data.result['id']) {
                                 PinaSkin.alert($('.field', elem), 'File can not been uploaded');
                                 return false
                             }
@@ -104,7 +104,7 @@
 
                     $.ajax({
                         type: 'get',
-                        url: url.replace('/images', '/') + 'catalog-matrix-content/0/images/' + data.result['image']["id"],
+                        url: url.replace('/images', '/') + 'catalog-matrix-content/0/images/' + data.result["id"],
                         success: function (html) {
                             $('.images', elem).html(html);
                         },
@@ -164,7 +164,7 @@
                 $(elt).on('beforeItemAdd', function (event) {
                     var tag = event.item;
                     if (!event.options || !event.options.preventPost) {
-                        var headers = $("[name=csrf_token]").val() ? {'X-CSRF-Token': $("[name=csrf_token]").val()} : {};
+                        var headers = $(".content-form").attr('data-csrf-token') ? {'X-CSRF-Token': $(".content-form").attr('data-csrf-token')} : {};
                         $.ajax('{/literal}{link get="cp/:cp/tags"}{literal}', {method: 'post', data: {tag: tag}, headers: headers, success: function (response) {
                                 if (response.tag && response.id) {
                                     elt.tagsinput('add', response, {preventPost: true});

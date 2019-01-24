@@ -6,30 +6,17 @@ use Pina\Request;
 use Pina\Response;
 use Pina\Arr;
 use Pina\Modules\CMS\ContentManager;
-use Pina\Modules\Images\ImageGateway;
+use Pina\Modules\Media\MediaGateway;
 
 Request::match('cp/:cp/catalog-matrix-content/:content_id');
 
 $contentId = Request::input('content_id');
-$columns = Request::only('image_id', 'title', 'button', 'url', 'tags');
+$columns = Request::only('media_id', 'title', 'button', 'url', 'tags');
 $params = Request::all();
 
 $catalog = Arr::joinColumns($columns);
 foreach ($catalog as $key => $value) {
-    $image = ImageGateway::instance()
-        ->whereId($value['image_id'])
-        ->selectAs('id', 'image_id')
-        ->selectAs('original_id', 'image_original_id')
-        ->selectAs('hash', 'image_hash')
-        ->selectAs('filename', 'image_filename')
-        ->selectAs('url', 'image_url')
-        ->selectAs('width', 'image_width')
-        ->selectAs('height', 'image_height')
-        ->selectAs('type', 'image_type')
-        ->selectAs('size', 'image_size')
-        ->selectAs('alt', 'image_alt')
-        ->first();
-    $catalog[$key] = array_merge($catalog[$key], $image);
+    $catalog[$key]['image'] = MediaGateway::instance()->find($value['media_id']);
 }
 
 $contentParams = [

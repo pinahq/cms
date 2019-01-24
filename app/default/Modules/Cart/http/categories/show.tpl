@@ -4,11 +4,9 @@
 {module get="resources/:resource_id/parents" resource_id=$resource.id display=breadcrumbs title=$resource.title}
 {/content}
 
-{img id=$resource.image_id}
+{module get="categories/:id/images" id=$resource.id}
 
 <h1 class="page-header">{$resource.title}</h1>
-
-{module get="categories/:id/images" id=$resource.id}
 
 {$resource.text|format_description}
 

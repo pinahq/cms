@@ -21,7 +21,7 @@
             <tr>
                 <td>
                     <a href="{link get=$offer.url}">
-                        {img image=$offer|@mine:"image" width=220 height=220 trim=4 style="width:96px;"}
+                        {img media=$offer|@mine:"image" width=220 height=220 trim=4 style="width:96px;"}
                     </a>
                 </td>
                 <td>

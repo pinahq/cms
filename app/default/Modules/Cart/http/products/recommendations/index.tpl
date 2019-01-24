@@ -5,8 +5,7 @@
             {assign var=index value=$smarty.foreach.products.iteration-1}
             <div class="col-xs-6 col-sm-4 col-md-12 product"> 
                 <a href="/{$resource.url}" class="thumbnail">
-                    {*img image_id=$resource.image_id style="width:393px;height=480px;" class="not-rotation img-responsive front"*}
-                    {img image=$resource|@mine:"image" width="220" height=220 trim=4 class="not-rotation img-responsive front"}
+                    {img media=$resource|@mine:"image" width="220" height=220 trim=4 class="not-rotation img-responsive front"}
                 </a>
 
                 <div><strong>{$resource.tags|tag:"Бренд"}</strong></div>

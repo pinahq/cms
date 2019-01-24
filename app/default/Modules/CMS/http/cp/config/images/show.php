@@ -4,10 +4,10 @@ namespace Pina\Modules\CMS;
 
 use Pina\Request;
 use Pina\Arr;
-use Pina\Modules\Images\ImageGateway;
+use Pina\Modules\Media\MediaGateway;
 
-Request::match('cp/:cp/config/:namespace/images/:image_id');
+Request::match('cp/:cp/config/:namespace/images/:media_id');
 
-$i = ImageGateway::instance()->find(Request::input('image_id'));
+$m = MediaGateway::instance()->find(Request::input('media_id'));
 
-return ['image' => $i];
+return ['media' => $m];

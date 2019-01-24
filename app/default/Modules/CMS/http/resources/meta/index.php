@@ -19,7 +19,7 @@ if (empty($meta['title']) && empty($meta['description']) && empty($meta['keyword
 
     $title = \Pina\Request::getPlace('title');
     if ($title && $config['company_title']) {
-        $title = $config['company_title'] . ' - ' . $title;
+        $title = $title . ' - ' . $config['company_title'];
     }
     $meta = [
         'title' => $title ? $title : $config['meta_title'],

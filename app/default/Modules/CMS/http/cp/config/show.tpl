@@ -29,7 +29,7 @@
                             <div class="image-control col-sm-10" {action_attributes post="cp/:cp/images" content_id=0}>
                                 <div class="images select-images action-upload-image" data-value="{$param.key}">
                                     {if $param.value}
-                                        {module get="cp/:cp/config/:namespace/images/:image_id" namespace=$param.namespace image_id=$param.value key=$param.key}
+                                        {module get="cp/:cp/config/:namespace/images/:media_id" namespace=$param.namespace media_id=$param.value key=$param.key}
                                     {else}
                                         <div class="image thumbnail" style="background-color:#fff;cursor: pointer;">
                                             <input type="hidden" name="params[{$param.key}]" value="0" />
@@ -121,7 +121,7 @@
                         data.submit();
                     },
                     done: function (e, data) {
-                        if (!data || !data.result || !data.result['image'] || !data.result['image']['id']) {
+                        if (!data || !data.result || !data.result['id']) {
                             PinaSkin.alert($('.field', elem), 'File can not been uploaded');
                             return false
                         }
@@ -150,7 +150,7 @@
                 
                 $.ajax({
                     type: 'get',
-                    url: url.replace('/images', '/') +'config/{/literal}{$params.namespace}{literal}/images/'+ data.result['image']["id"] +'?key='+ configKey,
+                    url: url.replace('/images', '/') +'config/{/literal}{$params.namespace}{literal}/images/'+ data.result["id"] +'?key='+ configKey,
                     success: function (html) {
                         $('.images', elem).html(html);
                     },

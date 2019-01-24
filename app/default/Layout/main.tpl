@@ -4,11 +4,18 @@
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
+        
+        {meta}
+        
+        {module get="favicon-link"}
 
         {if $resource.id}
             {module get="resources/:id/meta" id=$resource.id}
         {else}
-            <title>{place name="title"}</title>
+            {place name=title assign="title"}
+            {config namespace="Pina\Modules\CMS" key="meta_title" assign="meta_title"}
+            {config namespace="Pina\Modules\CMS" key="company_title" assign="company_title"}
+            <title>{$title|default:$meta_title|default:$company_title}</title>
         {/if}
 
         {include file="Skin/resources.tpl"}

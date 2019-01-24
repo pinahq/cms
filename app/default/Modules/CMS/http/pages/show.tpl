@@ -11,7 +11,7 @@
 {content name="body_class"}page{/content}
 
 {content name="top"}
-    {img id=$resource.image_id style="width:100%;"}
+    {img id=$resource.media_id style="width:100%;"}
 {/content}
 
 {form action="submissions" method="post"}

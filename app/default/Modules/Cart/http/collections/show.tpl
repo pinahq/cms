@@ -4,7 +4,7 @@
     {module get="resources/:resource_id/parents" resource_id=$resource.id display=breadcrumbs class=collection title=$resource.title}
 {/content}
 
-{img id=$resource.image_id}
+{img id=$resource.media_id}
 
 <h1 class="page-header">{$resource.title}</h1>
 

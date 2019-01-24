@@ -34,19 +34,7 @@ class ResourceGatewayExtension extends ResourceGateway
 
     public function withDiscount(&$needGroupBy)
     {
-        $userId = Auth::userId();
-        $discountIds = DiscountGateway::instance()
-            ->innerJoin(
-                UserTagGateway::instance()->on('tag_id', 'user_tag_id')->onBy('user_id', $userId)
-            )
-            ->whereBy('enabled', 'Y')
-            ->column('id');
-
-        $discountIds = array_merge($discountIds, DiscountGateway::instance()
-                ->whereBy('user_tag_id', 0)
-                ->whereBy('enabled', 'Y')
-                ->column('id'));
-
+        $discountIds = $this->getDiscountIds();
         if (empty($discountIds)) {
             return $this;
         }
@@ -68,6 +56,31 @@ class ResourceGatewayExtension extends ResourceGateway
                     ->onBy('id', $discountIds)
                     ->calculate('IFNULL(MAX(percent), 0) as discount_percent')
         );
+    }
+    
+    private function getDiscountIds()
+    {
+        static $savedDiscountIds = null;
+        
+        if (isset($savedDiscountIds)) {
+            return $savedDiscountIds;
+        }
+        
+        $userId = Auth::userId();
+        $discountIds = DiscountGateway::instance()
+            ->innerJoin(
+                UserTagGateway::instance()->on('tag_id', 'user_tag_id')->onBy('user_id', $userId)
+            )
+            ->whereBy('enabled', 'Y')
+            ->column('id');
+
+        $discountIds = array_merge($discountIds, DiscountGateway::instance()
+                ->whereBy('user_tag_id', 0)
+                ->whereBy('enabled', 'Y')
+                ->column('id'));
+        
+        return $savedDiscountIds = $discountIds;
+        
     }
 
     public function whereInStock()

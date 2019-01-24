@@ -1,6 +1,6 @@
 {if $tag.image_id}
     <a href="{link get=$tag.url}">
-        {img image=$tag width=80 height=60 trim=4 style="float:left;margin-right: 10px;"}
+        {img media=$tag|@mine:"image" width=80 height=60 trim=4 style="float:left;margin-right: 10px;"}
     </a>
 {/if}
 <p>

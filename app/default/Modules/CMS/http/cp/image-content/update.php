@@ -4,15 +4,14 @@ namespace Pina\Modules\CMS;
 
 use Pina\Request;
 use Pina\Response;
-use Pina\Modules\Images\Images;
-use Pina\Modules\Images\ImageGateway;
+use Pina\Modules\Media\MediaGateway;
 
 Request::match('cp/:cp/image-content/:content_id');
 
 $contentId = Request::input('content_id');
-$imageId = Request::input('image_id');
+$mediaId = Request::input('media_id');
 
-$image = ImageGateway::instance()->find($imageId);
+$image = MediaGateway::instance()->find($mediaId);
 
 $params = Request::only('title', 'url', 'width', 'offset_left', 'offset_top', 'offset_bottom');
 $params['image'] = $image;

@@ -3,7 +3,7 @@
         <a href="{$content.params.url}">
     {/if}
         {if $content.params.image.id}
-            <img src="{img class=image id=$content.params.image.id return=src}" 
+            <img src="{img class=image media=$content.params.image return=src}" 
                  class="image {$content.params.width} {$content.params.offset_left}"
                  title="{$content.params.title}" />
         {else}

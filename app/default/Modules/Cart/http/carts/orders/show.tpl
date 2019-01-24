@@ -101,7 +101,7 @@
     {foreach from=$offers item=offer}
         <tr>
             <td>
-                {img id=$offer.image_id style="width:100px;"}
+                {img id=$offer.media_id style="width:100px;"}
                 {$offer.title}
                 {$offer.tags}
             </td>

@@ -1,4 +1,4 @@
-{capture name=src}{img image=$image return=src}{/capture}
+{media_url storage=$image.storage path=$image.path assign=src}
 {strip}
     <div class="col col-sm-4">
         <div class="panel panel-default">
@@ -8,11 +8,11 @@
                 </h3>
             </div>
             <div class="panel-body" style="text-align:center;">
-                <div class="image" style="background-image:url({$smarty.capture.src});display:inline-block;width:150px;height:150px;background-size:contain;background-position:center;background-repeat:no-repeat;" />
+                <div class="image" style="background-image:url({$src});display:inline-block;width:150px;height:150px;background-size:contain;background-position:center;background-repeat:no-repeat;" />
                 <center class="sizes">{if $image.id}{$image.width}x{$image.height}{/if}</center>
             </div>
             <div class="panel-footer" style="margin:0;">
-                <input type="hidden" class="image_id" name="image_id[]" value="{$image.id}" />
+                <input type="hidden" class="media_id" name="media_id[]" value="{$image.id}" />
                 <div class="form-group">
                     <label>{t}Link{/t}</label>
                     <input type="text" name="link_url[]" class="form-control" placeholder="Введите ссылку..." value="{$image.link_url}" />

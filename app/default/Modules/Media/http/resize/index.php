@@ -1,8 +1,7 @@
 <?php
 
-namespace Pina\Modules\Images;
+namespace Pina\Modules\Media;
 
-use Pina\Request;
 use Pina\Response;
 
 $resource = \Pina\Input::getResource();
@@ -32,7 +31,9 @@ foreach ($keys as $index => $key) {
 }
 
 $source = \Pina\App::path().'/../public/'.substr($resource, strlen($base));
+
 if (!file_exists($source)) {
+echo $source;
     return \Pina\Response::notFound();
 }
 $targetPath = \Pina\App::path().'/../public/'.dirname($resource);

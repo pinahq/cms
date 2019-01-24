@@ -10,11 +10,11 @@
 
             <div class="image-control col-sm-6" {action_attributes post="cp/:cp/images"}>
                 <div class="images select-images action-upload-image">
-                    {if $params.item.image_id}
-                        {view get="cp/:cp/catalog-matrix-content/0/images/:image_id" image=$item}
+                    {if $params.item.image.id}
+                        {view get="cp/:cp/catalog-matrix-content/0/images/:media_id" image=$item.image}
                     {else}
                     <div class="image thumbnail" style="background-color:#fff;cursor: pointer;">
-                        <input type="hidden" name="image_id[]" value="0" />
+                        <input type="hidden" name="media_id[]" value="0" />
                         <a class="image-center" href="#" target="blank"><span>{t}Click to upload{/t}</span></a>
                     </div>
                     {/if}

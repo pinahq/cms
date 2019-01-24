@@ -7,7 +7,6 @@ use Pina\Modules\Cart\OrderGateway;
 use Pina\Modules\Cart\PaymentGateway;
 use Pina\Modules\Cart\PaymentMethodGateway;
 use Pina\Modules\CMS\Config;
-use Pina\Modules\Images\ImageTag;
 use PayPal\CoreComponentTypes\BasicAmountType;
 use PayPal\EBLBaseComponents\AddressType;
 use PayPal\EBLBaseComponents\BillingAgreementDetailsType;

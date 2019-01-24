@@ -3,7 +3,7 @@
 namespace Pina\Modules\CMS;
 
 use Pina\TableDataGateway;
-use Pina\Modules\Images\ImageGateway;
+use Pina\Modules\Media\MediaGateway;
 
 //update resource r1 inner join resource r2 on r2.resource=r1.resource and r2.id<>r1.id set r1.resource = UUID();
 //update resource r inner join resource_tree rt on rt.resource_id=r.id and rt.length=1 set r.order=rt.resource_order;
@@ -19,7 +19,7 @@ class ResourceGateway extends TableDataGateway
         'title' => "varchar(255) NOT NULL DEFAULT ''",
         'resource_type_id' => "int(10) NOT NULL DEFAULT 0",
         'enabled' => "enum('Y','N') NOT NULL DEFAULT 'Y'",
-        'image_id' => "int(10) NOT NULL DEFAULT 0", //обратная ссылка на основную картинку
+        'media_id' => "int(10) NOT NULL DEFAULT 0", //обратная ссылка на основную картинку
         'content_id' => "int(10) NOT NULL DEFAULT 0", //обратная ссылка на превью контента
         'external_id' => "varchar(255) NOT NULL DEFAULT ''",
         'order' => "INT(10) NOT NULL DEFAULT 0",
@@ -206,36 +206,13 @@ class ResourceGateway extends TableDataGateway
     public function withImage()
     {
         return $this->leftJoin(
-            ImageGateway::instance()->on('id', 'image_id')
+            MediaGateway::instance()->on('id', 'media_id')
                 ->selectAs('id', 'image_id')
-                ->selectAs('original_id', 'image_original_id')
-                ->selectAs('hash', 'image_hash')
-                ->selectAs('filename', 'image_filename')
-                ->selectAs('url', 'image_url')
+                ->selectAs('storage', 'image_storage')
+                ->selectAs('path', 'image_path')
                 ->selectAs('width', 'image_width')
                 ->selectAs('height', 'image_height')
                 ->selectAs('type', 'image_type')
-                ->selectAs('size', 'image_size')
-                ->selectAs('alt', 'image_alt')
-        );
-    }
-
-    public function withImages()
-    {
-        return $this->leftJoin(
-            ResourceImageGateway::instance()->on('resource_id', 'id')
-                ->leftJoin(
-                    ImageGateway::instance()->on('id', 'image_id')
-                        ->selectAs('original_id', 'image_original_id')
-                        ->selectAs('hash', 'image_hash')
-                        ->selectAs('filename', 'image_filename')
-                        ->selectAs('url', 'image_url')
-                        ->selectAs('width', 'image_width')
-                        ->selectAs('height', 'image_height')
-                        ->selectAs('type', 'image_type')
-                        ->selectAs('size', 'image_size')
-                        ->selectAs('alt', 'image_alt')
-                )
         );
     }
 

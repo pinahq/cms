@@ -6,5 +6,4 @@ use Pina\Request;
 
 $userId = Request::input("id");
 
-$u = UserGateway::instance()->find($userId);
-return ["user" => $u];
+return ["user" => UserGateway::instance()->find($userId)];

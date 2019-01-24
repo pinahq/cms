@@ -3,7 +3,6 @@
 namespace Pina\Modules\Cart;
 
 use Pina\Modules\CMS\TagTypeGateway;
-use Pina\Modules\CMS\ImportSchema;
 use Pina\Modules\CMS\ImportResourceSchema;
 
 class ImportOfferSchema extends ImportResourceSchema

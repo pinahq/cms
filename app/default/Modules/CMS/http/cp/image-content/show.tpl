@@ -6,12 +6,12 @@
         <h2 class="params-header">Параметры<br>изображения</h2>
         <div class="form-group">
             <label class="control-label col-sm-12">Изображение</label>
-            {capture name=src}{img id=$content.params.image.id return=src}{/capture}
+            {media_url storage=$content.params.image.storage path=$content.params.image.path assign=src}
             {strip}
                 <div class="image-control col-sm-12" {action_attributes post="cp/:cp/images"} style="text-align:right;">
                     <div class="thumbnail action-upload-image">
-                        <img src="{$smarty.capture.src}" style="max-width:200px;max-height:200px" />
-                        <input type="hidden" name="image_id" value="{$content.params.image.id|default:0}" />
+                        <img src="{$src}" style="max-width:200px;max-height:200px" />
+                        <input type="hidden" name="media_id" value="{$content.params.image.id|default:0}" />
                         <center>{if $content.params.image.id}{$content.params.image.width}x{$content.params.image.height}{else}{t}Click to upload{/t}{/if}</center>
                         <div class="message" style="text-align: center;"></div>
                     </div>
@@ -80,7 +80,7 @@
                             data.submit();
                         },
                         done: function (e, data) {
-                            if (!data || !data.result || !data.result['image'] || !data.result['image']['id']) {
+                            if (!data || !data.result || !data.result['id']) {
                                 $('.message', elem).html('File can not been uploaded');
                                 return false
                             }
@@ -108,8 +108,8 @@
             $(".action-upload-image", currentBlock).on('click', function () {
                 var elem = $(this).parents('.image-control');
                 uploadImage(elem, function (data) {
-                    $(elem).find('img').attr('src', data.result['image']['url']);
-                    $(elem).find('input[name=image_id]').val(data.result['image']['id']).trigger('change');
+                    $(elem).find('img').attr('src', data.result['url']);
+                    $(elem).find('input[name=media_id]').val(data.result['id']).trigger('change');
                 });
                 return false;
             });
@@ -153,7 +153,7 @@
                             'col-sm-offset-10 col-sm-offset-11 '
                             );
                         tag.addClass(value);
-                    } else if (name == 'image_id') {
+                    } else if (name == 'media_id') {
                         var src = currentBlock.find('.content-params .image-control > .thumbnail > img').attr('src');
                         tag.attr('src', src);
                     }

@@ -14,7 +14,6 @@ $r = ResourceGatewayExtension::instance()
     ->whereId($resourceId)
     ->whereEnabled()
     ->withResourceText()
-    ->withImage()
     ->first();
 
 if (empty($r)) {

@@ -4,7 +4,7 @@
     {foreach from=$cart_offers item=offer name="offers"}
         <tr>
             <td {if $smarty.foreach.offers.first}style="border:none;"{/if}>
-                {img image=$offer|@mine:"image" width=220 height=220 trim=4 style="width:96px;"}
+                {img media=$offer|@mine:"image" width=220 height=220 trim=4 style="width:96px;"}
 
             </td>
             <td {if $smarty.foreach.offers.first}style="border:none;"{/if}>

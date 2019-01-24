@@ -10,21 +10,20 @@
             <div class="product-label-sale">SALE</div>
         {/if}
 
-
         <div id="product-gallery">
             {if $resource.image_width < 1000}
-                <a  href="{img image=$resource|@mine:"image" width=$resource.image_width height=$resource.image_width trim=4 return=src}" 
+                <a  href="{img media=$resource|@mine:"image" width=$resource.image_width height=$resource.image_width trim=4 return=src}" 
                     class="zoom product-image">
-                    <img src="{img image=$resource|@mine:"image" width=360 height=360 trim=4 return="src"}"
-                         data-zoom-image="{img image=$resource|@mine:"image" width=$resource.image_width height=$resource.image_width trim=4 return=src}" 
+                    <img src="{img media=$resource|@mine:"image" width=360 height=360 trim=4 return="src"}"
+                         data-zoom-image="{img media=$resource|@mine:"image" width=$resource.image_width height=$resource.image_width trim=4 return=src}" 
                          style="max-width:100%"
                          />
                 </a>
             {else}
-                <a href="{img image=$resource|@mine:"image" width=1000 height=1000 trim=4 return=src}"
+                <a href="{img media=$resource|@mine:"image" width=1000 height=1000 trim=4 return=src}"
                    class="zoom product-image">
-                    <img src="{img image=$resource|@mine:"image" width=360 height=360 trim=4 return="src"}"
-                         data-zoom-image="{img image=$resource|@mine:"image" width=1000 height=1000 trim=4 return=src}"
+                    <img src="{img media=$resource|@mine:"image" width=360 height=360 trim=4 return="src"}"
+                         data-zoom-image="{img media=$resource|@mine:"image" width=1000 height=1000 trim=4 return=src}"
                          style="max-width:100%"
                          />
                 </a>

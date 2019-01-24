@@ -60,4 +60,25 @@ class Media
         return $storages[$storageKey] = new Storage($storageKey);
     }
 
+    public static function getStorageConfig($storageKey, $configKey)
+    {
+        $config = \Pina\Config::get('media');
+        return $config[$storageKey][$configKey] ?? '';
+    }
+
+    public static function findUrl($url)
+    {
+        $mediaId = MediaGateway::instance()->whereBy('original_url', $url)->id();
+        if (!empty($mediaId)) {
+            return $mediaId;
+        }
+        
+        $parsed = parse_url($url);
+        if (empty($parsed['path'])) {
+            return;
+        }
+        $db = App::container()->get(\Pina\DatabaseDriverInterface::class);
+        return MediaGateway::instance()->where("'" . $db->escape($parsed['path']) . "' LIKE CONCAT('%', path)")->id();
+    }
+
 }

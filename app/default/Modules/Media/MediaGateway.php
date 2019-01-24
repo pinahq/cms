@@ -21,6 +21,7 @@ class MediaGateway extends TableDataGateway
     );
     protected static $indexes = array(
         'PRIMARY KEY' => 'id',
+        'UNIQUE KEY' => ['storage', 'path'],
     );
 
 }

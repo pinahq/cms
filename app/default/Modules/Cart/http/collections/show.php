@@ -15,7 +15,6 @@ $r = ResourceGateway::instance()->whereId($resourceId)->select('*')
     ->whereEnabled()
     ->withResourceType()
     ->withResourceText()
-    ->withImages()
     ->first();
 
 if (empty($r)) {

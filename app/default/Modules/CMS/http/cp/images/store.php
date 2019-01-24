@@ -1,18 +1,27 @@
 <?php
 
-namespace Pina\Modules\Images;
+namespace Pina\Modules\CMS;
 
-use Pina\Request;
 use Pina\Response;
+use Pina\Modules\Media\Media;
+use Pina\Modules\Media\MediaGateway;
 
-$imageId = ImageDomain::upload();
+try {
+    $file = Media::getUploadedFile();
+    if (!$file->isMimeType('image/*')) {
+        return Response::badRequest('Wrong image type');
+    }
+    $file->moveToStorage();
+    $mediaId = $file->saveMeta();
+} catch (\RuntimeException $e) {
+    return Response::internalError($e->getMessage());
+}
 
-$i = false;
-if (empty($imageId)) {
+if (empty($mediaId)) {
     return Response::internalError();
 }
 
-$i = ImageGateway::instance()->find($imageId);
-$i['url'] = ImageDomain::getFileUrl($i['filename']);
+$m = MediaGateway::instance()->find($mediaId);
+$m['url'] = Media::getUrl($m['storage'], $m['path']);
 
-return Response::ok()->json(["image" => $i]);
+return Response::ok()->json($m);

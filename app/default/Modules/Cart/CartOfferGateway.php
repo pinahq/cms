@@ -104,7 +104,7 @@ class CartOfferGateway extends TableDataGateway
             ->innerJoin(
                 ResourceGatewayExtension::instance()->on('id', 'resource_id')
                 ->select('title')
-                ->select('image_id')
+                ->select('media_id')
                 ->withDiscount($needGroupBy)
             )
             ->leftJoin(

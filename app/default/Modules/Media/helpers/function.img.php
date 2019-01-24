@@ -1,6 +1,6 @@
 <?php
 
-use \Pina\Modules\Images\ImageTag;
+use \Pina\Modules\Media\ImageTag;
 
 function smarty_function_img($params, &$view)
 {

@@ -11,7 +11,7 @@ $resourceId = Request::input('resource_id');
 
 $images = ResourceImageGateway::instance()
     ->whereBy('resource_id', $resourceId)
-    ->withImage()
+    ->withMedia()
     ->orderBy('order', 'asc')->get();
 
 return ['images' => $images];

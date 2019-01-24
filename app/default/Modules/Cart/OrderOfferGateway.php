@@ -23,7 +23,7 @@ class OrderOfferGateway extends TableDataGateway
         'actual_price' => "decimal(12,2) NOT NULL DEFAULT '0.00'",
         /* дублирующиеся поля */
         'title' => "varchar(255) NOT NULL DEFAULT ''",
-        'image_id' => "int(11) UNSIGNED NOT NULL DEFAULT '0'",
+        'media_id' => "int(11) UNSIGNED NOT NULL DEFAULT '0'",
         'tags' => "varchar(1000) NOT NULL DEFAULT ''",
         'price' => "decimal(12,2) NOT NULL DEFAULT '0.00'",
         'sale_price' => "decimal(12,2) NOT NULL DEFAULT '0.00'",

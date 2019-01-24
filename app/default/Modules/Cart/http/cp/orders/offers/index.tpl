@@ -21,7 +21,7 @@
                     <tr {if $offer.order_offer_status_color} style="background-color: #{$offer.order_offer_status_color}"{/if}>
                         <td>
                             <a href="/{$offer.url}">
-                                {img id=$offer.image_id width=220 height=220 style="width:110px;"}
+                                {img id=$offer.media_id width=220 height=220 style="width:110px;"}
                             </a>
                         </td>
                         <td>

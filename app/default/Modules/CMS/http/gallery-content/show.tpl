@@ -17,7 +17,7 @@
                 {/if}
                 <div class="col-md-{$column_width}">
                     <a href="{img image=$image return=src}" rel="gallery">
-                        {img image=$image class="thumbnail"}
+                        {img media=$image class="thumbnail" style="max-width: 100%;"}
                     </a>
                 </div>
                     {assign var=index value=$index+1}

@@ -1,6 +1,6 @@
 <?php
 
-namespace Pina\Modules\Images;
+namespace Pina\Modules\Media;
 
 class Dispatcher
 {

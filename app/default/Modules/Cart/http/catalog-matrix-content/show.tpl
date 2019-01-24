@@ -2,8 +2,8 @@
     <div class="toplist-content">
         <div class="toplist-girls">
             <div class="toplist-banner">
-                {if $content.params.catalog.0.image_id}
-                    {img image=$content.params.catalog.0|@mine:"image" class=pulse}
+                {if $content.params.catalog.0.image.id}
+                    {img media=$content.params.catalog.0.image class=pulse}
                 {else}
                     <img src="/static/default/images/empty.gif" class="pulse" />
                 {/if}
@@ -27,8 +27,8 @@
 
         <div class="toplist-boys">
             <div class="toplist-banner">
-                {if $content.params.catalog.1.image_id}
-                    {img image=$content.params.catalog.1|@mine:"image" class=pulse}
+                {if $content.params.catalog.1.image.id}
+                    {img media=$content.params.catalog.1.image class=pulse}
                 {else}
                     <img src="/static/default/images/empty.gif" class="pulse" />
                 {/if}

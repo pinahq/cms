@@ -5,6 +5,8 @@
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         {meta}
+        
+        {module get="favicon-link"}
 
         {place name=title assign="title"}
         <title>{if $title}{$title} - {/if} PinaCMS</title>
@@ -18,8 +20,6 @@
         <!-- Bootstrap Material Design -->
         <link rel="stylesheet" type="text/css" href="/vendor/bootstrap-material-design/css/bootstrap-material-design.css">
         <link rel="stylesheet" type="text/css" href="/vendor/bootstrap-material-design/css/ripples.min.css">
-
-        {module get="favicon-link" image_id=$smarty.capture.image_id}
 
         {script src="/vendor/bootstrap-material-design/js/material.min.js"}{/script}
         {script src="/vendor/bootstrap-material-design/js/ripples.min.js"}{/script}

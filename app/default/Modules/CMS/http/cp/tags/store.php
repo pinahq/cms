@@ -4,9 +4,8 @@ namespace Pina\Modules\CMS;
 
 use Pina\Request;
 use Pina\Response;
-use Pina\App;
 
-Request::match('tags');
+Request::match('cp/:cp/tags');
 
 $tag = Request::input('tag');
 

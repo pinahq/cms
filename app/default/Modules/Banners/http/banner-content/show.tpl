@@ -7,7 +7,7 @@
             {if $image.enabled eq 'Y'}
                 <li>
                     <a href="{$image.link_url|default:"#"}">
-                        {img image=$image}
+                        {img media=$image}
                     </a>
                 </li>
             {/if}

@@ -5,6 +5,7 @@ return [
     'local' => [
         'driver' => 'local',
         'root' =>  __DIR__ . '/../public/uploads',
-        'url' => '/uploads'
+        'url' => '/uploads',
+        'resize' => true,
     ],
 ];

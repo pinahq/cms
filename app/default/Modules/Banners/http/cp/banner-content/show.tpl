@@ -78,7 +78,7 @@
                             data.submit();
                         },
                         done: function (e, data) {
-                            if (!data || !data.result || !data.result['image'] || !data.result['image']['id']) {
+                            if (!data || !data.result || !data.result['id']) {
                                 $('.message', elem).html('File can not been uploaded');
                                 return false
                             }
@@ -110,9 +110,9 @@
                 uploadImage(elem, function (data) {
                     console.log(elem, data);
                     var newItem = $(elem).find('.template > div').clone();
-                    newItem.find('.image').css('background-image', 'url(' + data.result['image']['url'] + ')');
-                    newItem.find('input.image_id').val(data.result['image']['id']);
-                    newItem.find('.sizes').text(data.result['image']['width'] + 'x' + data.result['image']['height']);
+                    newItem.find('.image').css('background-image', 'url(' + data.result['url'] + ')');
+                    newItem.find('input.media_id').val(data.result['id']);
+                    newItem.find('.sizes').text(data.result['width'] + 'x' + data.result['height']);
                     $(elem).find('.images').append(newItem);
 
                 });

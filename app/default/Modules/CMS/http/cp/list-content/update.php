@@ -4,8 +4,6 @@ namespace Pina\Modules\CMS;
 
 use Pina\Request;
 use Pina\Response;
-use Pina\Modules\Images\Images;
-use Pina\Modules\Images\ImageGateway;
 
 Request::match('cp/:cp/list-content/:content_id');
 

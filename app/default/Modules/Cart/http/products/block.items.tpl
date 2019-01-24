@@ -6,7 +6,7 @@
                 <div class="product-label-sale">SALE</div>
             {/if}
             <a href="/{$resource.url}" class="thumbnail">
-                {img image=$resource|@mine:"image" width="220" height=220 trim=4 class="not-rotation img-responsive front"}
+                {img media=$resource|@mine:"image" width="220" height=220 trim=4 class="not-rotation img-responsive front"}
             </a>
 
             <a href="/{$resource.url}">{$resource.title|tag_pattern:$type.pattern:$resource.tags}</a>

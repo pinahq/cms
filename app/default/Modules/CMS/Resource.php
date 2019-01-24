@@ -51,18 +51,18 @@ class Resource
 
     private static function handleUpdateImages($resourceId)
     {
-        $imageIds = Request::input('image_ids');
+        $imageIds = Request::input('media_ids');
         if (!empty($imageIds) && is_array($imageIds)) {
             $preparedImages = array();
             foreach ($imageIds as $order => $imageId) {
-                $preparedImages[] = ['image_id' => $imageId, 'order' => $order];
+                $preparedImages[] = ['media_id' => $imageId, 'order' => $order];
             }
 
             $gw = ResourceImageGateway::instance()->context('resource_id', $resourceId);
             $gw->delete();
             $gw->insert($preparedImages);
 
-            ResourceGateway::instance()->whereId($resourceId)->update(['image_id' => reset($imageIds)]);
+            ResourceGateway::instance()->whereId($resourceId)->update(['media_id' => reset($imageIds)]);
         }
     }
 

@@ -25,7 +25,7 @@ class Module implements ModuleInterface
 
     public function http()
     {
-//        DispatcherRegistry::register(new Dispatcher());
+        DispatcherRegistry::register(new Dispatcher());
         
         return [
             'resize',

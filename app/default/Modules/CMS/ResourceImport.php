@@ -2,8 +2,8 @@
 
 namespace Pina\Modules\CMS;
 
-use Pina\Modules\Images\ImageGateway;
-use Pina\Modules\Images\ImageDomain;
+use Pina\Modules\Media\MediaGateway;
+use Pina\Modules\Media\Media;
 
 class ResourceImport extends Import
 {
@@ -63,68 +63,30 @@ class ResourceImport extends Import
         foreach ($this->schema as $key => $item) {
             if ($item === 'image' && !empty($line[$key])) {
 
-                $imageId = 0;
-
-                $parsed = parse_url($line[$key]);
-                if (!empty($parsed['path'])) {
-                    $filename = basename($parsed['path']);
-                    $generatedUrl = ImageDomain::getFileUrl($filename);
-                    if (trim($generatedUrl) == trim($line[$key])) {
-                        $imageId = ImageGateway::instance()->whereBy('filename', $filename)->id();
-                    }
-                }
-
-                if (empty($imageId)) {
-                    $imageId = ImageGateway::instance()->whereBy('original_url', $line[$key])->id();
-                }
-
-                if (!$imageId) {
+                $originalUrl = '';
+                $mediaId = Media::findUrl($line[$key]);
+                if (!$mediaId) {
                     $filename = $this->lineResourceId . '-' . basename($line[$key]);
-                    $imageId = ImageDomain::saveUrl($line[$key], Transliteration::get($filename));
+                    $file = Media::getUrlCache(Transliteration::get($filename));
+                    if (!$file->isMimeType('image/*')) {
+                        continue;
+                    }
+                    $file->moveToStorage();
+                    $file->setOriginalUrl($line[$key]);
+                    $mediaId = $file->saveMeta();
                 }
 
-                $isAssigned = ResourceImageGateway::instance()->whereBy('image_id', $imageId)->whereBy('resource_id', $this->lineResourceId)->exists();
-
-                if ($imageId && !$isAssigned) {
+                $isAssigned = ResourceImageGateway::instance()->whereBy('media_id', $mediaId)->whereBy('resource_id', $this->lineResourceId)->exists();
+                if ($mediaId && !$isAssigned) {
                     ResourceImageGateway::instance()->put(array(
                         'resource_id' => $this->lineResourceId,
-                        'image_id' => $imageId
+                        'media_id' => $mediaId,
                     ));
                 }
 
-                if ($imageId && $first) {
+                if ($mediaId && $first) {
                     $first = false;
-                    ResourceGateway::instance()->whereId($this->lineResourceId)->update(array('image_id' => $imageId));
-                }
-            }
-
-            if ($item === 'image_url' && !empty($line[$key])) {
-
-                $imageId = 0;
-                if (empty($imageId)) {
-                    $imageId = ImageGateway::instance()->whereBy('original_url', $line[$key])->id();
-                }
-
-                if (empty($imageId)) {
-                    $imageId = ImageGateway::instance()->whereBy('url', $line[$key])->id();
-                }
-
-                if (!$imageId) {
-                    $imageId = ImageGateway::instance()->insertGetId(['url' => $line[$key], 'original_url' => $line[$key]]);
-                }
-
-                $isAssigned = ResourceImageGateway::instance()->whereBy('image_id', $imageId)->whereBy('resource_id', $this->lineResourceId)->exists();
-
-                if ($imageId && !$isAssigned) {
-                    ResourceImageGateway::instance()->put(array(
-                        'resource_id' => $this->lineResourceId,
-                        'image_id' => $imageId
-                    ));
-                }
-
-                if ($imageId && $first) {
-                    $first = false;
-                    ResourceGateway::instance()->whereId($this->lineResourceId)->update(array('image_id' => $imageId));
+                    ResourceGateway::instance()->whereId($this->lineResourceId)->update(array('media_id' => $mediaId));
                 }
             }
         }

@@ -22,7 +22,7 @@
                 {foreach from=$order_offers item=offer}
                     <tr>
                         <td>
-                            {img id=$offer.image_id width=220 height=220 style="width:110px;"}
+                            {img id=$offer.media_id width=220 height=220 style="width:110px;"}
                         </td>
                         <td>
                             {$offer.resource_title}<br />{$offer.tags|replace:"\n":"<br />"}

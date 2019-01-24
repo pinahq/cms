@@ -1,7 +1,7 @@
 <div class="list-group-item">
     <div class="row-picture">
-        {if $image_id}
-            {img id=$image_id width=56 height=56}
+        {if $media_id}
+            {img id=$media_id width=56 height=56}
         {else}
             <i class="material-icons">open_with</i>
         {/if}

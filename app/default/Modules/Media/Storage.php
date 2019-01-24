@@ -50,7 +50,7 @@ class Storage
         if (empty($config['driver'])) {
             throw new \Exception('Missed configuration: driver');
         }
-        
+
         switch ($config['driver']) {
             case 'local': return $this->createLocalDriver($config);
             case 's3': return $this->createS3Driver($config);
@@ -107,7 +107,7 @@ class Storage
             return $this->concatPathToUrl($this->config['url'], $adapter->getPathPrefix() . $path);
         }
         return $adapter->getClient()->getObjectUrl(
-                        $adapter->getBucket(), $adapter->getPathPrefix() . $path
+                $adapter->getBucket(), $adapter->getPathPrefix() . $path
         );
     }
 

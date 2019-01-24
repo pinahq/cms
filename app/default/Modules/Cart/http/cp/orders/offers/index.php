@@ -18,7 +18,7 @@ $oos = OrderOfferGateway::instance()
     ->select('discount_percent')
     ->select('tags')
     ->select('title')
-    ->select('image_id')
+    ->select('media_id')
     ->select('order_offer_status_id')
     ->whereBy('order_id', $orderId)
     ->leftJoin(

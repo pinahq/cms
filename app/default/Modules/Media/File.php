@@ -108,6 +108,11 @@ class File
     {
         return $this->meta['path'] ?? null;
     }
+    
+    public function setOriginalUrl($url)
+    {
+        $this->meta['original_url'] = $url;
+    }
 
     protected function getFileProperties($path)
     {

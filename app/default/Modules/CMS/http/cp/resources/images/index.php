@@ -1,30 +1,19 @@
 <?php
 
-//TODO: переделать сами картинки на массив images[]['image_id'] = XXXX
-
 namespace Pina\Modules\CMS;
 
 use Pina\Request;
-use Pina\Modules\Images\ImageGateway;
+use Pina\Modules\Media\MediaGateway;
+use Pina\Modules\Media\Media;
 
 Request::match('cp/:cp/resources/:resource_id/images');
 
 $resourceId = Request::input('resource_id');
 
-$images = ResourceImageGateway::instance()
-    ->innerJoin(
-        ImageGateway::instance()->on('id', 'image_id')
-            ->select('id')
-            ->select('filename')
-            ->select('url')
-            ->select('width')
-            ->select('height')
-            ->select('type')
-            ->select('size')
-            ->select('alt')
-    )
+$items = ResourceImageGateway::instance()
+    ->withMedia()
     ->whereBy('resource_id', $resourceId)
     ->orderBy('order', 'asc')
     ->get();
 
-return ['images' => $images];
+return ['items' => $items];
