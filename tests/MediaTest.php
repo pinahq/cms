@@ -50,6 +50,17 @@ class MediaTest extends TestCase
         $this->assertFalse($file->exists());
         $this->deleteDir(__DIR__ . '/public/uploads');
     }
+    
+    public function testIsMimeType()
+    {
+        $file = Media::getUrlCache('http://php.net/images/logos/php-logo.svg', 'php-logo.svg');
+        $this->assertTrue($file->isMimeType('*'));
+        $this->assertTrue($file->isMimeType('image'));
+        $this->assertTrue($file->isMimeType('image/*'));
+        $this->assertTrue($file->isMimeType('image/svg'));
+        $this->assertFalse($file->isMimeType('application/svg'));
+        $this->assertFalse($file->isMimeType('application/*'));
+    }
 
     protected function deleteDir($dirPath)
     {

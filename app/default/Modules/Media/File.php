@@ -71,6 +71,23 @@ class File
     {
         return $this->meta['type'] ?? null;
     }
+    
+    public function isMimeType($type)
+    {
+        $current = explode('/', $this->meta['type'] ?? "");
+        $needle = explode('/', $type);
+        foreach ($needle as $k => $item) {
+            if ($item == '*') {
+                continue;
+            }
+            
+            if ($item != ($current[$k] ?? '')) {
+                return false;
+            }
+        }
+        return true;
+        
+    }
 
     public function getSize()
     {
