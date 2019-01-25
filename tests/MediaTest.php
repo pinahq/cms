@@ -5,6 +5,7 @@ use Pina\App;
 use Pina\Config;
 use Pina\Modules\Media\Media;
 use Pina\Modules\Media\File;
+use Pina\Modules\Media\MimeTypes;
 
 class MediaTest extends TestCase
 {
@@ -60,6 +61,16 @@ class MediaTest extends TestCase
         $this->assertTrue($file->isMimeType('image/svg'));
         $this->assertFalse($file->isMimeType('application/svg'));
         $this->assertFalse($file->isMimeType('application/*'));
+    }
+    
+    public function testMimeTypes()
+    {
+        $this->assertEquals('jpg', MimeTypes::resolveExtension('image/jpeg'));
+        $this->assertEquals('png', MimeTypes::resolveExtension('image/png'));
+        $this->assertEquals('gif', MimeTypes::resolveExtension('image/gif'));
+        $this->assertEquals('bmp', MimeTypes::resolveExtension('image/bmp'));
+        $this->assertEquals('ico', MimeTypes::resolveExtension('image/vnd.microsoft.icon'));
+        //$this->assertEquals('image/vnd.microsoft.icon', MimeTypes::resolveMimeType('ico'));
     }
 
     protected function deleteDir($dirPath)
