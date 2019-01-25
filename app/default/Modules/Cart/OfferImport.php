@@ -87,6 +87,10 @@ class OfferImport extends ResourceImport
             if (isset($data[$key]) && empty($data[$key])) {
                 $data[$key] = 0;
             }
+            
+            if (isset($data[$key])) {
+                $data[$key] = intval($data[$key]);
+            }
         }
 
         return $data;

@@ -5,6 +5,8 @@ namespace Pina\Modules\CMS;
 use Pina\Modules\Media\MediaGateway;
 use Pina\Modules\Media\Media;
 
+use Pina\Log;
+
 class ResourceImport extends Import
 {
 
@@ -63,30 +65,35 @@ class ResourceImport extends Import
         foreach ($this->schema as $key => $item) {
             if ($item === 'image' && !empty($line[$key])) {
 
-                $originalUrl = '';
-                $mediaId = Media::findUrl($line[$key]);
-                if (!$mediaId) {
-                    $filename = $this->lineResourceId . '-' . basename($line[$key]);
-                    $file = Media::getUrlCache(Transliteration::get($filename));
-                    if (!$file->isMimeType('image/*')) {
-                        continue;
+                try {
+                    $originalUrl = '';
+                    $mediaId = Media::findUrl($line[$key]);
+                    if (!$mediaId) {
+                        $filename = $this->lineResourceId . '-' . basename($line[$key]);
+                        $file = Media::getUrlCache($line[$key], $filename);
+                        if (!$file->isMimeType('image/*')) {
+                            continue;
+                        }
+                        $file->moveToStorage();
+                        $file->setOriginalUrl($line[$key]);
+                        $mediaId = $file->saveMeta();
                     }
-                    $file->moveToStorage();
-                    $file->setOriginalUrl($line[$key]);
-                    $mediaId = $file->saveMeta();
-                }
 
-                $isAssigned = ResourceImageGateway::instance()->whereBy('media_id', $mediaId)->whereBy('resource_id', $this->lineResourceId)->exists();
-                if ($mediaId && !$isAssigned) {
-                    ResourceImageGateway::instance()->put(array(
-                        'resource_id' => $this->lineResourceId,
-                        'media_id' => $mediaId,
-                    ));
-                }
+                    $isAssigned = ResourceImageGateway::instance()->whereBy('media_id', $mediaId)->whereBy('resource_id', $this->lineResourceId)->exists();
+                    if ($mediaId && !$isAssigned) {
+                        ResourceImageGateway::instance()->put(array(
+                            'resource_id' => $this->lineResourceId,
+                            'media_id' => $mediaId,
+                        ));
+                    }
 
-                if ($mediaId && $first) {
-                    $first = false;
-                    ResourceGateway::instance()->whereId($this->lineResourceId)->update(array('media_id' => $mediaId));
+
+                    if ($mediaId && $first) {
+                        $first = false;
+                        ResourceGateway::instance()->whereId($this->lineResourceId)->update(array('media_id' => $mediaId));
+                    }
+                } catch (\Exception $e) {
+                    Log::error('import', $e->getMessage());
                 }
             }
         }
@@ -98,7 +105,7 @@ class ResourceImport extends Import
     {
         foreach ($this->schema as $k => $item) {
             if ($item == 'parent' && !empty($line[$k])) {
-                
+
                 $resourceId = Resource::fillTreeWithPath(
                         $line[$k], $this->parentResourceTypeId, $this->pathDelimiter
                 );
@@ -116,11 +123,11 @@ class ResourceImport extends Import
         if (empty($keyFields)) {
             return false;
         }
-
+        
         $this->lineResourceId = $this->getId(
             $line, ResourceGateway::instance()->whereBy('resource_type_id', $this->itemResourceTypeId), $keyFields, $this->lineTags
         );
-
+        
         $data = $this->extractResource($line);
         if (empty($this->lineResourceId) && $this->resourceCreateAllowed) {
             $data['resource_type_id'] = $this->itemResourceTypeId;

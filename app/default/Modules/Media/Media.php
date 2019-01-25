@@ -26,6 +26,8 @@ class Media
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_FILE, $f);
         curl_setopt($ch, CURLOPT_URL, $url);
+//        curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 10);
+//        curl_setopt($ch, CURLOPT_TIMEOUT, 60);
         $r = curl_exec($ch);
 
         $info = curl_getinfo($ch);
@@ -36,7 +38,7 @@ class Media
 
         if (empty($fileName)) {
             $urlPath = parse_url($url, PHP_URL_PATH);
-            $fileName = pathinfo($urlPath, PATHINFO_FILENAME);
+            $fileName = pathinfo($urlPath, PATHINFO_BASENAME);
         }
         return new File($tmpPath, $fileName, $info['content_type'] ?? null);
     }

@@ -31,7 +31,7 @@ class File
         if (empty($storageKey)) {
             $storageKey = \Pina\Config::get('media', 'default');
         }
-        
+
         $this->meta['storage'] = $storageKey;
 
         $storage = Media::getStorage($storageKey);
@@ -46,7 +46,7 @@ class File
         unlink($this->path);
         $this->path = null;
     }
-    
+
     public function exists()
     {
         return file_exists($this->path);
@@ -71,7 +71,7 @@ class File
     {
         return $this->meta['type'] ?? null;
     }
-    
+
     public function isMimeType($type)
     {
         $current = explode('/', $this->meta['type'] ?? "");
@@ -80,13 +80,12 @@ class File
             if ($item == '*') {
                 continue;
             }
-            
+
             if ($item != ($current[$k] ?? '')) {
                 return false;
             }
         }
         return true;
-        
     }
 
     public function getSize()
@@ -108,7 +107,7 @@ class File
     {
         return $this->meta['path'] ?? null;
     }
-    
+
     public function setOriginalUrl($url)
     {
         $this->meta['original_url'] = $url;
@@ -126,19 +125,20 @@ class File
     {
         $info = getimagesize($path);
         if (empty($info)) {
-            $pathInfo = pathinfo($name);
-            if ($pathInfo['extension'] == 'ico') {
-                $info = array(
-                    0 => 0,
-                    1 => 0,
-                    'mime' => 'image/vnd.microsoft.icon'
-                );
-            }
+            $info = [];
         }
 
         if (empty($info['mime'])) {
             $info['mime'] = mime_content_type($path);
         }
+
+        /*
+          if (empty($info['mime'])) {
+          $pathInfo = pathinfo($name);
+          $info['mime'] = MimeTypes::resolveMimeType($pathInfo['extension']);
+          }
+         */
+
         if (empty($info['mime'])) {
             $info['mime'] = $type;
         }
@@ -146,13 +146,12 @@ class File
         return [
             'width' => $info[0] ?? 0,
             'height' => $info[1] ?? 0,
-            'type' => $info['mime'],
+            'type' => $info['mime'] ?? '',
         ];
     }
 
     protected function generatePath($name)
     {
-//        $name = str_replace(' ', '-', $name);
         $chars = "abcdefghijklmnopqrstuvwxyz0123456789";
         $code = "";
         $length = mt_rand(8, 32);
@@ -163,15 +162,23 @@ class File
         }
 
         $ext = pathinfo($name, PATHINFO_EXTENSION);
+        if (empty($ext) && !empty($this->meta['type'])) {
+            $ext = MimeTypes::resolveExtension($this->meta['type']);
+        }
         $basename = pathinfo($name, PATHINFO_FILENAME);
 
 //        $token = $code . '.' . mt_rand();
         $token = $code;
 
         $dir = substr($token, 0, 2) . '/' . substr($token, 2, 2) . '/';
-        $filename = $basename . '.' . substr($token, 4) . '.' . $ext;
+        $filename = $this->normalizeName($basename) . '.' . substr($token, 4) . ($ext ? ( '.' . $ext) : '');
 
         return $dir . $filename;
+    }
+
+    protected function normalizeName($name)
+    {
+        return str_replace(' ', '-', $name);
     }
 
 }
