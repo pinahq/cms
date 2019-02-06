@@ -22,7 +22,7 @@ $paymentHandler = new PaymentHandler(Request::input('orderNumber'), 'processed')
 $config = Config::getNamespace(__NAMESPACE__);
 
 $validator = new Validator(new Logger(), $paymentHandler);
-$validator->set('action', 'checkOrder');
+$validator->set('action', 'paymentAviso');
 $validator->set('shopId', $config['shopId']);
 $validator->set('shopPassword', $config['shopPassword']);
 
