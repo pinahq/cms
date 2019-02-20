@@ -10,8 +10,8 @@
             {else}
                 <option value="{$item.key}">{$item.region}</option>
             {/if}
+            {assign var=important_presented value=true}
         {/if}
-        {assign var=important_presented value=true}
     {/foreach}
 
     {if $important_presented}
