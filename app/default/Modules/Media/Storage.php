@@ -15,7 +15,7 @@ class Storage
     protected $config = [];
     protected $filesystem = null;
 
-    public function __construct($storageKey = null)
+    public function __construct($targetStorageKey = null)
     {
         $config = \Pina\Config::get('media');
         $storageKey = $targetStorageKey ?? $config['default'];
