@@ -33,7 +33,6 @@ foreach ($keys as $index => $key) {
 $source = \Pina\App::path().'/../public/'.substr($resource, strlen($base));
 
 if (!file_exists($source)) {
-echo $source;
     return \Pina\Response::notFound();
 }
 $targetPath = \Pina\App::path().'/../public/'.dirname($resource);
