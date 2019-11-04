@@ -39,7 +39,7 @@ class OrderGateway extends TableDataGateway
         'total' => "decimal(12,2) NOT NULL DEFAULT '0.00'",
         'payed' => "decimal(12,2) NOT NULL DEFAULT '0.00'",
         
-        'coupon' => "varchar(32) NOT NULL DEFAULT ''",
+        'coupon' => "varchar(32) NULL DEFAULT NULL",
         
         'address_id' => "int(11) UNSIGNED NOT NULL DEFAULT '0'",
         
